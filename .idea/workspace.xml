@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="19b08f25-46b4-4a13-88ab-b8987d2b5098" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP74" />
+  <component name="ProjectId" id="1bJ7HEisfWWcdrkKFjmSZbTIGvm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\QRef\src\Interfaces" />
+      <recent name="C:\xampp\htdocs\QRef\src\Model\AbstractClasses" />
+      <recent name="C:\xampp\htdocs\QRef\src\Model\Exceptions" />
+      <recent name="C:\xampp\htdocs\QRef\src\Model\Interfaces" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\QRef\lib" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ValidationTest.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/ValidationTest.php">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHP Script.ValidationTest.php" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="19b08f25-46b4-4a13-88ab-b8987d2b5098" name="Default Changelist" comment="" />
+      <created>1588338252568</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588338252568</updated>
+      <workItem from="1588338254836" duration="2099000" />
+      <workItem from="1588417317699" duration="4560000" />
+      <workItem from="1588433560869" duration="67000" />
+      <workItem from="1588498281567" duration="5646000" />
+      <workItem from="1588610064478" duration="3854000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="348" y="67" key="#CLI_Interpreters" timestamp="1588417890971">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="348" y="67" key="#CLI_Interpreters/0.0.1536.824@0.0.1536.824" timestamp="1588417890971" />
+    <state x="562" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1588420780784">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="562" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1588420780784" />
+    <state x="523" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588500322300">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="523" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1588500322300" />
+    <state x="600" y="313" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1588338485996">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="600" y="313" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1588338485996" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1588504371679">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588504371679" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1588504371679">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1588504371679" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1588504371679">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1588504371679" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1588504371679">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588504371679" />
+    <state x="1101" y="454" key="NewPhpClassDialog" timestamp="1588611760466">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="1101" y="454" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1588611760466" />
+    <state x="604" y="336" key="NewPhpFileDialog" timestamp="1588503628802">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="604" y="336" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1588503628802" />
+    <state x="277" y="55" key="SettingsEditor" timestamp="1588498557896">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="55" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588498557896" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1588610078725">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1588610078725" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1588611871947">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1588611871947" />
+  </component>
+</project>
