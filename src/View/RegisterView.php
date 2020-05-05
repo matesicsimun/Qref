@@ -24,14 +24,14 @@ class RegisterView extends AbstractView
         $form->add_attribute(new \HTMLAttribute("method","post"));
 
         // Create input elements
-        $names = ["name", "surname", "birthday", "email", "password", "password2"];
-        $types = ["text", "text", "date", "text", "password", "password"];
-        $ids = ["name","surname", "birthday", "email", "password", "password2"];
+        $names = ["username", "name", "surname", "birthday", "email", "password", "password2"];
+        $types = ["text", "text", "text", "date", "text", "password", "password"];
+        $ids = ["username", "name","surname", "birthday", "email", "password", "password2"];
         $inputElements = $this->createInputs($types, $names, $ids);
 
         // Create label elements
-        $text = ["Name: ", "Surname: ", "Birthday: ", "Email address: ", "Password: ", "Repeat password: "];
-        $for = ["name", "surname", "birthday", "email", "password", "password2"];
+        $text = ["Username: ", "Name: ", "Surname: ", "Birthday: ", "Email address: ", "Password: ", "Repeat password: "];
+        $for = ["username", "name", "surname", "birthday", "email", "password", "password2"];
         $labelElements = $this->createLabels($text, $for);
 
         for($i = 0; $i < count($inputElements); $i++){

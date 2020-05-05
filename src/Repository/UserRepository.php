@@ -32,4 +32,14 @@ class UserRepository implements IUserRepository
     {
         // TODO: Implement updateUser() method.
     }
+
+    public function GetUserByUsername(string $username): User
+    {
+        $user = new User();
+        $users = $user->loadAll("WHERE username = " . " '$username'" );
+
+        if (count($users) === 1){
+            return $users[0];
+        }
+    }
 }

@@ -13,6 +13,8 @@ class User extends AbstractDBModel
 {
     private int $id;
 
+    private string $username;
+
     private string $name;
 
     private string $surname;
@@ -24,6 +26,23 @@ class User extends AbstractDBModel
     private string $passwordHash;
 
     private array $quizes;
+
+    /**
+     * @return string
+     */
+    public function getUserName(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $userName
+     */
+    public function setUserName(string $userName): void
+    {
+        $this->username = $userName;
+    }
+
 
     /**
      * @return array
@@ -131,9 +150,6 @@ class User extends AbstractDBModel
         $this->passwordHash = $passwordHash;
     }
 
-
-
-
     public function getPrimaryKeyColumn() : string
     {
         return "Id";
@@ -146,6 +162,6 @@ class User extends AbstractDBModel
 
     public function getColumns() : array
     {
-        return ["Name","Surname","BirthDate","Email","PasswordHash"];
+        return ["Username","Name","Surname","BirthDate","Email","PasswordHash"];
     }
 }

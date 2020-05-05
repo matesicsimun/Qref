@@ -16,7 +16,7 @@ class UserService implements IUserService
      * @param array $userData
      * @return User
      */
-    public function createUser(array $userData): User
+    public function createUser(array $userData): ?User
     {
         if ($this->validateRegistrationData($userData)) {
             $user = new User();
@@ -25,6 +25,7 @@ class UserService implements IUserService
             $user->__set("Email", $userData['email']);
             $user->__set("BirthDate", $userData['birthday']);
             $user->__set("PasswordHash", password_hash($userData['password'], PASSWORD_DEFAULT));
+            $user->__set("Username", $userData['username']);
 
             return $user;
         }
@@ -90,4 +91,25 @@ class UserService implements IUserService
         return $d && $d->format($format) == $date;
     }
 
+    /**
+     * Checks if the user provided the right password.
+     * @param string $password
+     * @param string $storedPassword
+     * @return bool
+     */
+    public function checkPassword(string $password, string $storedPassword): bool
+    {
+        return password_verify($password, $storedPassword);
+    }
+
+    public function setUserAttributes(User $user): User
+    {
+        $user->setBirthDate($user->__get("BirthDate"));
+        $user->setEmail($user->__get("Email"));
+        $user->setName($user->__get("Name"));
+        $user->setSurname($user->__get("Surname"));
+        $user->setPasswordHash($user->__get("PasswordHash"));
+        $user->setUserName($user->__get("Username"));
+        return $user;
+    }
 }

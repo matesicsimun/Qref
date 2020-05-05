@@ -10,6 +10,8 @@ interface IUserRepository
 
     public function getUser(int $id): User;
 
+    public function GetUserByUsername(string $username): User;
+
     public function deleteUser(int $id);
 
     public function updateUser(User $user);

@@ -45,17 +45,18 @@ class RegisterController extends AbstractController
      * @param array $formData User data submitted via form.
      */
     private function register(array $formData){
+
         $user = $this->userService->createUser($formData);
 
         if ($user){
             $this->userRepository->saveUser($user);
             $this->message = "User successfully registered.";
 
-            redirect("/index.php?message=" . $this->message);
+            redirect("index.php?message=" . $this->message);
         } else {
             $this->message = "User registration failed.";
 
-            redirect("/index.php?action=register&message=".$this->message);
+            redirect("index.php?action=register&message=".$this->message);
         }
     }
 }
