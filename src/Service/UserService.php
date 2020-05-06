@@ -104,6 +104,7 @@ class UserService implements IUserService
 
     public function setUserAttributes(User $user): User
     {
+        $user->setId($user->getPrimaryKey());
         $user->setBirthDate($user->__get("BirthDate"));
         $user->setEmail($user->__get("Email"));
         $user->setName($user->__get("Name"));

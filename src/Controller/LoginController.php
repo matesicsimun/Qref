@@ -37,12 +37,17 @@ class LoginController extends AbstractController
             $user = $this->userService->setUserAttributes($user);
 
             if ($this->userService->checkPassword($this->formData['password'], $user->getPasswordHash())){
-                session_start();
-                $_SESSION['username'] = $user->getUserName();
+                $this->updateSessionData($user->getId(), $user->getUserName());
             }
         }
-
         redirect("index.php");
     }
 
+
+    private function updateSessionData(int $id, string $username){
+        session_start();
+        $_SESSION['userid'] = $id;
+        $_SESSION['username'] = $username;
+        $_SESSION['loggedin'] = true;
+    }
 }

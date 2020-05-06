@@ -95,14 +95,25 @@ function isLoggedIn(){
 
 /**
  * Gets the user id from the session cookie.
- * @param string $v
- * @return string
+ * @param string $v The key in the session.
+ * @return int
  */
-function userID(string $v):string{
+function userID(string $v):int{
     if (isLoggedIn()){
-        if (isset($_SESSION['userId'])){
-            return $_SESSION['userId'];
+        if (isset($_SESSION[$v])){
+            return $_SESSION[$v];
         }
+    }
+}
+
+/**
+ * Gets the session data if set.
+ * @param string $key
+ * @return mixed
+ */
+function getSessionData(string $key){
+    if (isset($_SESSION[$key])){
+        return $_SESSION[$key];
     }
 }
 

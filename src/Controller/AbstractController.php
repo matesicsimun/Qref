@@ -9,6 +9,7 @@ abstract class AbstractController
     public function doAction() {
         global $CONTENTS;
 
+
         create_doctype();
         begin_html();
 

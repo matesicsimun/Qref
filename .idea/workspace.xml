@@ -63,7 +63,9 @@
       <workItem from="1588498281567" duration="5646000" />
       <workItem from="1588610064478" duration="4055000" />
       <workItem from="1588614183616" duration="175000" />
-      <workItem from="1588694692108" duration="3986000" />
+      <workItem from="1588694692108" duration="4427000" />
+      <workItem from="1588709931282" duration="73000" />
+      <workItem from="1588778873812" duration="6039000" />
     </task>
     <servers />
   </component>
@@ -103,10 +105,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="165" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588614122398" />
-    <state x="1101" y="454" key="NewPhpClassDialog" timestamp="1588695758454">
+    <state x="1101" y="454" key="NewPhpClassDialog" timestamp="1588782713806">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="1101" y="454" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1588695758454" />
+    <state x="1101" y="454" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1588782713806" />
     <state x="604" y="336" key="NewPhpFileDialog" timestamp="1588694806468">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -115,13 +117,13 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588498557896" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1588694692258">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1588779166114">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1588694692258" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1588695392625">
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1588779166114" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1588782451171">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1588695392625" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1588782451171" />
   </component>
 </project>

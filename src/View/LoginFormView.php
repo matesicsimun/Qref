@@ -14,9 +14,9 @@ class LoginFormView extends AbstractView
         echo $this->getHtml();
     }
 
-
-    public function getHtml():string
+    public function getForm():\HTMLFormElement
     {
+
         $form = new \HTMLFormElement();
         $form->add_attribute(new \HTMLAttribute("action","index.php?action=login"));
         $form->add_attribute(new \HTMLAttribute("method","post"));
@@ -45,6 +45,10 @@ class LoginFormView extends AbstractView
 
         $form->add_children(new \HTMLCollection([$userNameLabel, $userNameInput, $passwordLabel, $passwordInput, $submit]));
 
-        return $form->get_html();
+        return $form;
+    }
+    public function getHtml():string
+    {
+        return $this->getForm()->get_html();
     }
 }

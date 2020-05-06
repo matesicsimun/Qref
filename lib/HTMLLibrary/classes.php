@@ -26,3 +26,5 @@ require "HTMLBrElement.php";
 require_once "HTMLImgElement.php";
 require_once "HTMLHrElement.php";
 require_once "HTMLScriptElement.php";
+require_once "HTMLSpanElement.php";
+require_once "HTMLStyleElement.php";
