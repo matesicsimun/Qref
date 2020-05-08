@@ -21,7 +21,7 @@ class RegisterView extends AbstractView
         $form = new HTMLFormElement();
 
         // Add form attributes
-        $form->add_attribute(new \HTMLAttribute("action","index.php?action=register"));
+        $form->add_attribute(new \HTMLAttribute("action","register"));
         $form->add_attribute(new \HTMLAttribute("method","post"));
 
         // Create input elements

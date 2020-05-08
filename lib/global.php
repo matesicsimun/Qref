@@ -4,6 +4,9 @@ require_once dirname(__FILE__) . '/../lib/functions.php';
 require_once dirname(__FILE__) . '/../lib/htmllib.php';
 require_once dirname(__FILE__) . '/../lib/HTMLLibrary/classes.php';
 
+
+session_start();
+
 spl_autoload_register(function ($classname) {
 
             $fileName = "./" . str_replace("\\", "/", $classname) . ".php";
@@ -17,3 +20,5 @@ spl_autoload_register(function ($classname) {
             return true;
         }
 );
+require_once "inc/services.php";
+require_once "inc/route.php";

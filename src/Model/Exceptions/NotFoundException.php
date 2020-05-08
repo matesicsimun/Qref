@@ -1,7 +1,7 @@
 <?php
 
 
-namespace src\Model;
+namespace src\Model\Exceptions;
 
 
 class NotFoundException extends \Exception

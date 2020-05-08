@@ -62,8 +62,8 @@ abstract class AbstractDBModel implements DBModel{
                 . ") VALUES (" . implode(",", $placeHolders) . ")";
 
             DBPool::getInstance()->prepare($sql)->execute($values);
-
             $this->pk  = DBPool::getInstance()->lastInsertId();
+
         } else {
             $values = array();
             $placeHolders = array();

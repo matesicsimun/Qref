@@ -10,11 +10,22 @@ namespace src\View;
  */
 class HeaderView extends AbstractView
 {
+    private ?string $message = null;
+
+    public function __construct(string $message = null)
+    {
+        $this->message = $message;
+    }
+
     /**
      * Displays html.
      */
     public function generateHtml()
     {
+        if ($this->message){
+            echo $this->message;
+        }
+
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("width", "1500"));
         $row = new \HTMLRowElement();
@@ -31,7 +42,7 @@ class HeaderView extends AbstractView
 
         $registerFormCell = new \HTMLCellElement();
         $registerForm = new \HTMLFormElement();
-        $registerForm->add_attribute(new \HTMLAttribute("action", "index.php?action=register"));
+        $registerForm->add_attribute(new \HTMLAttribute("action", "register"));
         $registerForm->add_attribute(new \HTMLAttribute("method", "post"));
 
         $regBtn = new \HTMLInputElement();

@@ -20,11 +20,11 @@ abstract class AbstractController
 
         begin_body([]);
 
-        $this->doJob();
+        $this->showHtml();
 
         end_body();
         end_html();
     }
 
-    protected abstract function doJob();
+    protected abstract function showHtml();
 }

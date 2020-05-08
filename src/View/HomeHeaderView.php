@@ -11,15 +11,22 @@ namespace src\View;
 class HomeHeaderView extends AbstractView
 {
     private array $userData;
+    private string $message;
 
-    public function __construct(string $username)
+    public function __construct(string $username, string $message = null)
     {
         $this->userData = array();
         $this->userData['username'] = $username;
+        $this->message = $message;
     }
 
     public function generateHtml()
     {
+
+        if($this->message){
+            echo $this->message;
+        }
+
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("width", "700"));
         $row_1 = new \HTMLRowElement();
@@ -60,7 +67,8 @@ class HomeHeaderView extends AbstractView
         $logoutImage->add_attribute(new \HTMLAttribute("src", "Images/logout.png"));
         $logoutImage->add_attribute(new \HTMLAttribute("width", "30"));
         $logoutImage->add_attribute(new \HTMLAttribute("height", "30"));
-        $logoutLink->add_child($logoutLink);
+        //$logoutLink->add_child($logoutLink);
+        $logoutLink->add_child(new \HTMLTextNode("Logout"));
         $logoutCell = new \HTMLCellElement();
         $logoutCell->add_child($logoutLink);
         $row_1->add_child($logoutCell);

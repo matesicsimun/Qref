@@ -18,7 +18,7 @@ class LoginFormView extends AbstractView
     {
 
         $form = new \HTMLFormElement();
-        $form->add_attribute(new \HTMLAttribute("action","index.php?action=login"));
+        $form->add_attribute(new \HTMLAttribute("action","login"));
         $form->add_attribute(new \HTMLAttribute("method","post"));
 
         $userNameInput = new \HTMLInputElement();

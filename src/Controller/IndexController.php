@@ -10,17 +10,18 @@ use src\View\HomeHeaderView;
 
 class IndexController extends AbstractController
 {
-
-    protected function doJob()
+    public function displayHomePage()
     {
         if (isLoggedIn()){
-            $headerView = new HomeHeaderView(getSessionData('username'));
-            $headerView->generateHtml();
+            $headerView = new HomeHeaderView(getSessionData('username'), get("message"));
         } else {
-            $headerView = new HeaderView();
-            $headerView->generateHtml();
+            $headerView = new HeaderView(get("message"));
         }
-
+        $headerView->generateHtml();
     }
 
+    protected function showHtml()
+    {
+        // TODO: Implement showHtml() method.
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace src\Repository;
 
+use MongoDB\Driver\Exception\CommandException;
 use src\Interfaces\IUserRepository;
 use src\Model\User;
 
@@ -13,9 +14,18 @@ class UserRepository implements IUserRepository
 
     }
 
-    public function saveUser(\src\Model\User $user)
+    public function saveUser(\src\Model\User $user): int
     {
-        $user->save();
+        if($this->getUserByUsername($user->getUserName())){
+            return -2;
+        }
+        try{
+            $user->save();
+        } catch (\Exception $e){
+            return -1;
+        }
+
+        return 0;
     }
 
     public function getUser(int $id): User
@@ -33,13 +43,17 @@ class UserRepository implements IUserRepository
         // TODO: Implement updateUser() method.
     }
 
-    public function GetUserByUsername(string $username): User
+    public function GetUserByUsername(string $username): ?User
     {
         $user = new User();
-        $users = $user->loadAll("WHERE username = " . " '$username'" );
+        try{
+            $users = $user->loadAll("WHERE username = " . " '$username'" );
+            if (!empty($users)){
+                return $users[0];
+            }
+            return null;
+        } catch (\Exception $e){
 
-        if (count($users) === 1){
-            return $users[0];
         }
     }
 }
