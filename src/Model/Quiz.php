@@ -3,13 +3,15 @@
 
 namespace src\Model;
 
+use src\Model\AbstractClasses\AbstractDBModel;
+
 /**
  * Class Quiz
  * Models a quiz that contains questions.
  * One important note: this is the only model which has a string id.
  * @package src\Model
  */
-class Quiz
+class Quiz extends AbstractDBModel
 {
     private string $quizId;
 
@@ -138,4 +140,18 @@ class Quiz
     }
 
 
+    public function getPrimaryKeyColumn()
+    {
+        return "QuizId";
+    }
+
+    public function getTable()
+    {
+        return "quizes";
+    }
+
+    public function getColumns()
+    {
+        return ["AuthorId", "Name", "Description", "CommentsEnabled", "IsPublic"];
+    }
 }

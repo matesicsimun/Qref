@@ -17,10 +17,11 @@ class HeaderView extends AbstractView
         $this->message = $message;
     }
 
+
     /**
-     * Displays html.
+     * Displays the view html.
      */
-    public function generateHtml()
+    public function showView() : void
     {
         if ($this->message){
             echo $this->message;

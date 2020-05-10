@@ -14,9 +14,19 @@ class UserRepository implements IUserRepository
 
     }
 
+    public function updateUser(User $user): int{
+        try{
+            $user->save();
+        } catch (\Exception $e){
+            return -1;
+        }
+
+        return 0;
+    }
+
     public function saveUser(\src\Model\User $user): int
     {
-        if($this->getUserByUsername($user->getUserName())){
+        if($this->getUserByUsername($user->__get("Username"))){
             return -2;
         }
         try{
@@ -38,10 +48,6 @@ class UserRepository implements IUserRepository
         // TODO: Implement deleteUser() method.
     }
 
-    public function updateUser(\src\Model\User $user)
-    {
-        // TODO: Implement updateUser() method.
-    }
 
     public function GetUserByUsername(string $username): ?User
     {

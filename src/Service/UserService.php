@@ -3,11 +3,24 @@
 namespace src\Service;
 
 use DateTime;
+use src\Interfaces\IUserRepository;
 use src\Interfaces\IUserService;
 use src\Model\User;
 
 class UserService implements IUserService
 {
+    private IUserRepository $userRepository;
+
+    public function __construct(IUserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
+    public function saveUser(array $userData): int
+    {
+        $user = $this->createUser($userData);
+        return $this->userRepository->saveUser($user);
+    }
 
     /**
      * Creates and returns a new User object
@@ -16,7 +29,7 @@ class UserService implements IUserService
      * @param array $userData
      * @return User
      */
-    public function createUser(array $userData): ?User
+    private function createUser(array $userData): ?User
     {
         if ($this->validateRegistrationData($userData)) {
             $user = new User();
@@ -94,11 +107,12 @@ class UserService implements IUserService
     /**
      * Checks if the user provided the right password.
      * @param string $password
-     * @param string $storedPassword
+     * @param string $password
      * @return bool
      */
-    public function checkPassword(string $password, string $storedPassword): bool
+    public function checkPasswordForUser(string $username, string $password): bool
     {
+        $storedPassword = $this->loadUserByUsername($username)->__get("PasswordHash");
         return password_verify($password, $storedPassword);
     }
 
@@ -112,5 +126,34 @@ class UserService implements IUserService
         $user->setPasswordHash($user->__get("PasswordHash"));
         $user->setUserName($user->__get("Username"));
         return $user;
+    }
+
+    public function loadUserByUsername(string $username): ?User
+    {
+        $userNoAttributes = $this->userRepository->GetUserByUsername($username);
+        return $this->setUserAttributes($userNoAttributes);
+    }
+
+    public function loadUserById(int $id): ?User
+    {
+        $userNoAttributes = $this->userRepository->getUser($id);
+        return $this->setUserAttributes($userNoAttributes);
+    }
+
+    private function validatePassword(string $password): bool{
+        $passwordPattern = "/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/";
+        return preg_match($passwordPattern, $password);
+    }
+
+    public function updateUserPassword(string $username, string $passwordNew): int
+    {
+        if ($this->validatePassword($passwordNew)){
+
+            $user = $this->userRepository->GetUserByUsername($username);
+            $newPasswordHash = password_hash($passwordNew, PASSWORD_DEFAULT);
+            $user->__set("PasswordHash", $newPasswordHash);
+            return $this->userRepository->updateUser($user);
+        }
+        return -3;
     }
 }

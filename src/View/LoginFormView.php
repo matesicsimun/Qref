@@ -5,14 +5,10 @@ namespace src\View;
 
 
 use MongoDB\Driver\Exception\Exception;
+use src\Interfaces\IView;
 
-class LoginFormView extends AbstractView
+class LoginFormView implements IView
 {
-
-    public function generateHtml()
-    {
-        echo $this->getHtml();
-    }
 
     public function getForm():\HTMLFormElement
     {
@@ -43,6 +39,7 @@ class LoginFormView extends AbstractView
         $submit->add_attribute(new \HTMLAttribute("type","submit"));
         $submit->add_attribute(new \HTMLAttribute("value", "Login"));
 
+
         $form->add_children(new \HTMLCollection([$userNameLabel, $userNameInput, $passwordLabel, $passwordInput, $submit]));
 
         return $form;
@@ -50,5 +47,13 @@ class LoginFormView extends AbstractView
     public function getHtml():string
     {
         return $this->getForm()->get_html();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showView(): void
+    {
+        echo $this->getHtml();
     }
 }

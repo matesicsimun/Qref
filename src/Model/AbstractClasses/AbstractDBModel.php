@@ -50,6 +50,7 @@ abstract class AbstractDBModel implements DBModel{
         $columns = $this->getColumns();
 
         if (null === $this->pk){
+
             $values = array();
             $placeHolders = array();
 
@@ -65,12 +66,13 @@ abstract class AbstractDBModel implements DBModel{
             $this->pk  = DBPool::getInstance()->lastInsertId();
 
         } else {
+
             $values = array();
             $placeHolders = array();
 
             foreach ($columns as $column){
                 $values[] = $this->data->$column;
-                $placeHolders = $column . " = ?";
+                $placeHolders[] = $column . " = ?";
             }
 
             $values[] = $this->pk;

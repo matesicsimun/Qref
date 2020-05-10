@@ -8,6 +8,11 @@ AbstractRoute::register("index", new DefaultRoute("index", array(
     "action"=>"displayHomePage"
 )));
 
+AbstractRoute::register("account_info", new DefaultRoute("account_info", array(
+    "controller"=>"UserController",
+    "action"=>"showAccountInfo"
+)));
+
 AbstractRoute::register("login", new DefaultRoute("login", array(
     "controller"=>"UserController",
     "action"=>"loginUser"
@@ -18,6 +23,10 @@ AbstractRoute::register("logout", new DefaultRoute("logout", array(
     "action"=>"logoutUser"
 )));
 
+AbstractRoute::register("change_password", new DefaultRoute("change_password", array(
+    "controller"=>"UserController",
+    "action"=>"changePassword"
+)));
 
 AbstractRoute::register("e404", new DefaultRoute("error/404", array(
         "controller" => "NotFoundController",

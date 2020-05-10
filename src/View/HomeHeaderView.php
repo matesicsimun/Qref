@@ -11,18 +11,18 @@ namespace src\View;
 class HomeHeaderView extends AbstractView
 {
     private array $userData;
-    private string $message;
+    private ?string $message;
 
-    public function __construct(string $username, string $message = null)
+    public function __construct(string $username, ?string $message = null)
     {
         $this->userData = array();
         $this->userData['username'] = $username;
         $this->message = $message;
     }
 
-    public function generateHtml()
-    {
 
+    public function showView(): void
+    {
         if($this->message){
             echo $this->message;
         }
@@ -33,7 +33,7 @@ class HomeHeaderView extends AbstractView
         $row_2 = new \HTMLRowElement();
 
         $accountLink = new \HTMLAElement();
-        $accountLink->add_attribute(new \HTMLAttribute("href", "index.php?action=account"));
+        $accountLink->add_attribute(new \HTMLAttribute("href", "account_info"));
         $accountImage = new \HTMLImgElement();
         $accountImage->add_attribute(new \HTMLAttribute("src", "Images/gear.png"));
         $accountImage->add_attribute(new \HTMLAttribute("width", "30"));
@@ -51,7 +51,7 @@ class HomeHeaderView extends AbstractView
         $row_1->add_child($usernameCell);
 
         $homeLink = new \HTMLAElement();
-        $homeLink->add_attribute(new \HTMLAttribute("href", "index.php"));
+        $homeLink->add_attribute(new \HTMLAttribute("href", "index"));
         $homeImage = new \HTMLImgElement();
         $homeImage->add_attribute(new \HTMLAttribute("src", "Images/home.png"));
         $homeImage->add_attribute(new \HTMLAttribute("width", "30"));

@@ -7,16 +7,70 @@ use HTMLFormElement;
 use HTMLInputElement;
 use HTMLLabelElement;
 use HTMLTextNode;
+use src\Interfaces\IView;
 
-class RegisterView extends AbstractView
+class RegisterView implements IView
 {
     public function __construct()
     {
     }
 
-    public function generateHtml()
-    {
 
+    /**
+     * Creates an array of HTML input elements.
+     * @param array $types
+     * @param array $names
+     * @param array $ids
+     * @param array $attributes
+     * @return array
+     */
+    private function createInputs(array $types, array $names, array $ids, array $attributes){
+        $inputs = [];
+
+        for ($i = 0; $i < sizeof($types); $i++){
+            $input = new HTMLInputElement();
+            $input->add_attribute(new HTMLAttribute("type", $types[$i]));
+            $input->add_attribute(new HTMLAttribute("name", $names[$i]));
+            $input->add_attribute(new HTMLAttribute("id", $ids[$i]));
+
+            if(isset($attributes[$names[$i]])){
+                $curAttributes = $attributes[$names[$i]];
+                foreach($curAttributes as $attrName => $attrVal){
+                    $input->add_attribute(new HTMLAttribute($attrName, $attrVal));
+                }
+            }
+
+            $inputs[] = $input;
+        }
+
+        return $inputs;
+    }
+
+    /**
+     * Creates an array of HTML label elements.
+     * @param array $text
+     * @param array $for
+     * @return array
+     */
+    private function createLabels(array $text, array $for): array{
+        $labels = [];
+
+        for ($i = 0; $i < sizeof($text); $i++){
+            $label = new HTMLLabelElement();
+            $label->add_child(new HTMLTextNode($text[$i]));
+            $label->add_attribute(new HTMLAttribute("for", $for[$i]));
+
+            $labels[] = $label;
+        }
+
+        return $labels;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showView(): void
+    {
         // Create base form
         $form = new HTMLFormElement();
 
@@ -84,55 +138,4 @@ class RegisterView extends AbstractView
         echo $form->get_html();
         echo $checkScript->get_html();
     }
-
-    /**
-     * Creates an array of HTML input elements.
-     * @param array $types
-     * @param array $names
-     * @param array $ids
-     * @param array $attributes
-     * @return array
-     */
-    private function createInputs(array $types, array $names, array $ids, array $attributes){
-        $inputs = [];
-
-        for ($i = 0; $i < sizeof($types); $i++){
-            $input = new HTMLInputElement();
-            $input->add_attribute(new HTMLAttribute("type", $types[$i]));
-            $input->add_attribute(new HTMLAttribute("name", $names[$i]));
-            $input->add_attribute(new HTMLAttribute("id", $ids[$i]));
-
-            if(isset($attributes[$names[$i]])){
-                $curAttributes = $attributes[$names[$i]];
-                foreach($curAttributes as $attrName => $attrVal){
-                    $input->add_attribute(new HTMLAttribute($attrName, $attrVal));
-                }
-            }
-
-            $inputs[] = $input;
-        }
-
-        return $inputs;
-    }
-
-    /**
-     * Creates an array of HTML label elements.
-     * @param array $text
-     * @param array $for
-     * @return array
-     */
-    private function createLabels(array $text, array $for): array{
-        $labels = [];
-
-        for ($i = 0; $i < sizeof($text); $i++){
-            $label = new HTMLLabelElement();
-            $label->add_child(new HTMLTextNode($text[$i]));
-            $label->add_attribute(new HTMLAttribute("for", $for[$i]));
-
-            $labels[] = $label;
-        }
-
-        return $labels;
-    }
-
 }

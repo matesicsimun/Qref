@@ -6,9 +6,15 @@ use src\Model\User;
 
 interface IUserService
 {
-    public function createUser(array $userData): ?User;
+    public function saveUser(array $userData): int;
 
-    public function checkPassword(string $password, string $storedPassword): bool;
+    public function checkPasswordForUser(string $username,  string $password): bool;
 
     public function setUserAttributes(User $user): User;
+
+    public function loadUserByUsername(string $username): ?User;
+
+    public function loadUserById(int $id): ?User;
+
+    public function updateUserPassword(string $username, string $passwordNew): int;
 }
