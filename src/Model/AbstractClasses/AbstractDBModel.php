@@ -43,7 +43,9 @@ abstract class AbstractDBModel implements DBModel{
         DBPool::getInstance()->prepare("DELETE FROM " . $this->getTable() . " WHERE "
             . $this->getPrimaryKeyColumn() . " =?")->execute(array($this->pk));
         $this->pk = null;
+
     }
+
 
     public function save(){
 

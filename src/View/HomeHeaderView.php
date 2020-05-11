@@ -28,9 +28,9 @@ class HomeHeaderView extends AbstractView
         }
 
         $table = new \HTMLTableElement();
-        $table->add_attribute(new \HTMLAttribute("width", "700"));
+        $table->add_attribute(new \HTMLAttribute("width", "1000"));
         $row_1 = new \HTMLRowElement();
-        $row_2 = new \HTMLRowElement();
+        $row_1->add_attribute(new \HTMLAttribute("style", "text-align:center"));
 
         $accountLink = new \HTMLAElement();
         $accountLink->add_attribute(new \HTMLAttribute("href", "account_info"));

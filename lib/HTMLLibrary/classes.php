@@ -28,3 +28,5 @@ require_once "HTMLHrElement.php";
 require_once "HTMLScriptElement.php";
 require_once "HTMLSpanElement.php";
 require_once "HTMLStyleElement.php";
+require_once "HTMLHElement.php";
+require_once "HTMLTextAreaElement.php";

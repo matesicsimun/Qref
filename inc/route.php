@@ -39,3 +39,8 @@ AbstractRoute::register("register", new DefaultRoute("register", array(
     "action"=>"registerUser"
 )));
 
+AbstractRoute::register("quiz_create", new DefaultRoute("quiz_create", array(
+    "controller"=>"QuizController",
+    "action"=>"createQuiz"
+)));
+

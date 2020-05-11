@@ -15,62 +15,18 @@ class RegisterView implements IView
     {
     }
 
-
-    /**
-     * Creates an array of HTML input elements.
-     * @param array $types
-     * @param array $names
-     * @param array $ids
-     * @param array $attributes
-     * @return array
-     */
-    private function createInputs(array $types, array $names, array $ids, array $attributes){
-        $inputs = [];
-
-        for ($i = 0; $i < sizeof($types); $i++){
-            $input = new HTMLInputElement();
-            $input->add_attribute(new HTMLAttribute("type", $types[$i]));
-            $input->add_attribute(new HTMLAttribute("name", $names[$i]));
-            $input->add_attribute(new HTMLAttribute("id", $ids[$i]));
-
-            if(isset($attributes[$names[$i]])){
-                $curAttributes = $attributes[$names[$i]];
-                foreach($curAttributes as $attrName => $attrVal){
-                    $input->add_attribute(new HTMLAttribute($attrName, $attrVal));
-                }
-            }
-
-            $inputs[] = $input;
-        }
-
-        return $inputs;
-    }
-
-    /**
-     * Creates an array of HTML label elements.
-     * @param array $text
-     * @param array $for
-     * @return array
-     */
-    private function createLabels(array $text, array $for): array{
-        $labels = [];
-
-        for ($i = 0; $i < sizeof($text); $i++){
-            $label = new HTMLLabelElement();
-            $label->add_child(new HTMLTextNode($text[$i]));
-            $label->add_attribute(new HTMLAttribute("for", $for[$i]));
-
-            $labels[] = $label;
-        }
-
-        return $labels;
-    }
-
     /**
      * @inheritDoc
      */
     public function showView(): void
     {
+        $textNode = new \HTMLTextNode("*Password must be at least 5 characters, at least one letter, 
+                                            and at least one uppercase and lowercase letter.");
+        echo $textNode->get_html();
+        $br = new \HTMLBrElement();
+        echo $br->get_html();
+        echo $br->get_html();
+
         // Create base form
         $form = new HTMLFormElement();
 
@@ -88,18 +44,21 @@ class RegisterView implements IView
             "surname"=>["required"=>"true"],
             "birthday"=>["required"=>"true"],
             "email"=>["required"=>"true"],
-            "password"=>["onchange"=>"check();"],
-            "password2"=>["onchange"=>"check();"]
+            "password"=>["pattern"=>"^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$",
+                "onchange"=>"check();"],
+            "password2"=>["pattern"=>"^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$",
+                "onchange"=>"check();"]
         ];
-        $inputElements = $this->createInputs($types, $names, $ids, $attributes);
+        $inputElements = createInputs($types, $names, $ids, $attributes);
 
         // Create label elements
         $text = ["Username: ", "Name: ", "Surname: ", "Birthday: ", "Email address: ", "Password: ", "Confirm password: "];
         $for = ["username", "name", "surname", "birthday", "email", "password", "password2"];
-        $labelElements = $this->createLabels($text, $for);
+        $labelElements = createLabels($text, $for);
 
         // Add to form
         for($i = 0; $i < count($inputElements); $i++){
+            $form->add_child($br);
             $form->add_child($labelElements[$i]);
             $form->add_child($inputElements[$i]);
         }
@@ -108,6 +67,7 @@ class RegisterView implements IView
         $span = new \HTMLSpanElement();
         $span->add_attribute(new HTMLAttribute("id", "message"));
         $form->add_child($span);
+        $form->add_child($br);
 
         // Create JS script element
         $checkScript = new \HTMLScriptElement();

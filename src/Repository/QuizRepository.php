@@ -12,7 +12,7 @@ class QuizRepository implements IQuizRepository
 
     public function saveQuiz(Quiz $quiz): int
     {
-        if($this->getQuiz($quiz->getPrimaryKey())){
+        if($this->getQuizByName($quiz->__get("Name"))){
             return -2;
         }
         try{
@@ -35,7 +35,7 @@ class QuizRepository implements IQuizRepository
         return 0;
     }
 
-    public function getQuiz(int $id): Quiz
+    public function getQuiz(int $id): ?Quiz
     {
         $quiz = new Quiz();
         $quiz->load($id);
@@ -43,20 +43,18 @@ class QuizRepository implements IQuizRepository
         return $quiz;
     }
 
-    public function getQuizByName(string $name, int $limit = 1): Quiz
+    public function getQuizByName(string $name): ?Quiz
     {
         $quiz = new Quiz();
         try{
-            $quizArr = $quiz->loadAll("where Name = ". $name);
+            $quizArr = $quiz->loadAll(" where Name = '$name'");
             if (!empty($quizArr)){
-                if (count($quizArr) >= $limit){
-                    return array_slice($quizArr, 0, $limit);
-                }
+                return $quizArr[0];
             }
         }catch(Exception $e){
 
         }
-
+        return null;
     }
 
     public function getAllFromUsername(string $username): array

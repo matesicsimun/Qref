@@ -14,6 +14,13 @@ class ChangePasswordView implements IView
      */
     public function showView(): void
     {
+        $textNode = new \HTMLTextNode("*Password must be at least 5 characters, at least one letter, 
+                                            and at least one uppercase and lowercase letter.");
+        echo $textNode->get_html();
+        $br = new \HTMLBrElement();
+        echo $br->get_html();
+        echo $br->get_html();
+
         $form = new \HTMLFormElement();
         $form->add_attribute(new \HTMLAttribute("method", "post"));
         $form->add_attribute(new \HTMLAttribute("action", "change_password"));
@@ -31,6 +38,8 @@ class ChangePasswordView implements IView
         $passwordNew->add_attribute(new \HTMLAttribute("name", "passwordNew"));
         $passwordNew->add_attribute(new \HTMLAttribute("onchange", "check()"));
         $passwordNew->add_attribute(new \HTMLAttribute("required", "true"));
+        $passwordNew->add_attribute(new \HTMLAttribute("pattern",
+                                    "^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$"));
 
         $passwordNewCheck = new \HTMLInputElement();
         $passwordNewCheck->add_attribute(new \HTMLAttribute("type", "password"));
@@ -38,6 +47,8 @@ class ChangePasswordView implements IView
         $passwordNewCheck->add_attribute(new \HTMLAttribute("name", "passwordNewCheck"));
         $passwordNewCheck->add_attribute(new \HTMLAttribute("onchange", "check()"));
         $passwordNewCheck->add_attribute(new \HTMLAttribute("required", "true"));
+        $passwordNewCheck->add_attribute(new \HTMLAttribute("pattern",
+                                    "^\S*(?=\S{5,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$"));
 
         $submit = new \HTMLInputElement();
         $submit->add_attribute(new \HTMLAttribute("type", "submit"));
@@ -59,8 +70,8 @@ class ChangePasswordView implements IView
         $pwdNewLabel->add_child(new \HTMLTextNode("New password: "));
         $pwdNewCheckLabel->add_child(new \HTMLTextNode("Repeat new password: "));
 
-        $form->add_children(new \HTMLCollection([$pwdOldLabel, $passwordOld, $pwdNewLabel, $passwordNew,
-                                            $pwdNewCheckLabel, $passwordNewCheck, $submit]));
+        $form->add_children(new \HTMLCollection([$pwdOldLabel, $passwordOld, $br, $pwdNewLabel, $passwordNew,
+                                            $br, $pwdNewCheckLabel, $passwordNewCheck, $br, $submit]));
 
         // Message field
         $span = new \HTMLSpanElement();

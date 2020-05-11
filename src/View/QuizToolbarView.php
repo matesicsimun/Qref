@@ -13,9 +13,11 @@ class QuizToolbarView implements \src\Interfaces\IView
     public function showView():void
     {
         $table = new \HTMLTableElement();
-        $table->add_attribute(new \HTMLAttribute("width",1500));
+        $table->add_attribute(new \HTMLAttribute("width",1000));
+        $table->add_attribute(new \HTMLAttribute("border","true"));
 
         $row = new \HTMLRowElement();
+        $row->add_attribute(new \HTMLAttribute("style", "text-align:center"));
 
         $createLink = new \HTMLAElement();
         $viewLink = new \HTMLAElement();
@@ -23,9 +25,16 @@ class QuizToolbarView implements \src\Interfaces\IView
         $challengeLink = new \HTMLAElement();
 
         $createLink->add_attribute(new \HTMLAttribute("href","quiz_create"));
+        $createLink->add_child(new \HTMLTextNode("Create quiz"));
+
         $viewLink->add_attribute(new \HTMLAttribute("href","quiz_view"));
+        $viewLink->add_child(new \HTMLTextNode("View all"));
+
         $statisticsLink->add_attribute(new \HTMLAttribute("href","quiz_statistics"));
-        $challengeLink->add_attribute(new \HTMLAttribute("href","challenge"));
+        $statisticsLink->add_child(new \HTMLTextNode("Quiz statistics"));
+
+        $challengeLink->add_attribute(new \HTMLAttribute("href", "challenge"));
+        $challengeLink->add_child(new \HTMLTextNode("Challenge"));
 
         $links = [$createLink, $viewLink, $statisticsLink, $challengeLink];
         $cells = [];

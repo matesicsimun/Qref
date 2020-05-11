@@ -152,6 +152,6 @@ class Quiz extends AbstractDBModel
 
     public function getColumns()
     {
-        return ["AuthorId", "Name", "Description", "CommentsEnabled", "IsPublic"];
+        return ["QuizId", "AuthorId", "Name", "Description", "CommentsEnabled", "IsPublic"];
     }
 }

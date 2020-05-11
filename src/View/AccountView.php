@@ -21,10 +21,6 @@ class AccountView implements IView
      */
     public function showView(): void
     {
-        $p = new \HTMLPelement();
-        $p->add_attribute(new \HTMLAttribute("style", "text-align:center"));
-        $p->add_child(new \HTMLTextNode("Account details"));
-
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("width", 1000));
         $table->add_attribute(new \HTMLAttribute("border", "true"));
@@ -61,7 +57,6 @@ class AccountView implements IView
         $table->add_child($row);
         $table->add_child($row2);
 
-        echo $p->get_html();
         echo $table->get_html();
     }
 }

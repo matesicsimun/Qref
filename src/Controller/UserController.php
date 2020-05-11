@@ -13,6 +13,7 @@ use src\View\AccountView;
 use src\View\ChangePasswordView;
 use src\View\HeaderView;
 use src\View\HomeHeaderView;
+use src\View\HomePageView;
 use src\View\RegisterView;
 
 class UserController extends AbstractController
@@ -31,6 +32,8 @@ class UserController extends AbstractController
         $user = $this->userService->loadUserByUsername($_SESSION['username']);
         if($user){
             $accountView = new AccountView($user);
+            $header = new HomePageView($user->getUserName());
+            $header->showView();
             $accountView->showView();
         }else{
             redirect("index");
@@ -106,7 +109,7 @@ class UserController extends AbstractController
     }
 
     private function updateSessionData(int $id, string $username){
-        $_SESSION['userid'] = $id;
+        $_SESSION['userId'] = $id;
         $_SESSION['username'] = $username;
         $_SESSION['loggedin'] = true;
     }
