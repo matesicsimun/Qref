@@ -28,6 +28,7 @@ class QuizCreateView implements IView
         $form = new \HTMLFormElement();
         $form->add_attribute(new \HTMLAttribute("action", "quiz_create"));
         $form->add_attribute(new \HTMLAttribute("method", "post"));
+        $form->add_attribute(new \HTMLAttribute("enctype", "multipart/form-data"));
 
         $authorIdHidden = new \HTMLInputElement();
         $authorIdHidden->add_attribute(new \HTMLAttribute("type", "hidden"));

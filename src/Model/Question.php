@@ -3,6 +3,8 @@
 
 namespace src\Model;
 
+use src\Model\AbstractClasses\AbstractDBModel;
+
 /**
  * Class Question
  * Models a question which has a type, question text,
@@ -14,7 +16,7 @@ namespace src\Model;
  * The type is a code
  * @package src\Model
  */
-class Question
+class Question extends AbstractDBModel
 {
     private int $id;
 
@@ -144,5 +146,18 @@ class Question
     }
 
 
+    public function getPrimaryKeyColumn()
+    {
+        return "Id";
+    }
 
+    public function getTable()
+    {
+        return "questions";
+    }
+
+    public function getColumns()
+    {
+        return ["QuizId", "Text", "Type"];
+    }
 }

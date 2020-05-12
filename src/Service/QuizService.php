@@ -17,24 +17,24 @@ class QuizService implements IQuizService
         $this->quizRepository = $quizRepository;
     }
 
-    public function saveQuiz(array $quizData): int
+    public function saveQuiz(array $quizData, array $fileData): int
     {
         if($this->validateQuizData($quizData)){
             $quiz = $this->createQuiz($quizData);
             $code = $this->quizRepository->saveQuiz($quiz);
 
-            //$this->saveQuestions($quizData);
+            $this->saveQuestions($quizData, $fileData, $quiz->getQuizId());
 
             return $code;
         }
         return -3;
     }
 
-    public function saveQuestions(array $quizData){
-        if (isset($quizData['quizText'])){
-            ServiceContainer::get("QuestionService")->saveQuestionsFromText($quizData['quizText']);
+    public function saveQuestions(array $quizData, array $quizFile, string $quizId){
+        if ($quizData['quizText'] != ''){
+            ServiceContainer::get("QuestionService")->saveQuestionsFromText($quizData['quizText'], $quizId);
         }else{
-            ServiceContainer::get("QuestionService")->saveQuestionsFromFile($quizData['quizFile']);
+            ServiceContainer::get("QuestionService")->saveQuestionsFromFile($quizFile, $quizId);
         }
     }
 
@@ -51,6 +51,7 @@ class QuizService implements IQuizService
 
         $quizId = uniqid();
 
+        $quiz->setQuizId($quizId);
         $quiz->__set("QuizId", $quizId);
         $quiz->__set("Name", $quizData['quizName']);
         $quiz->__set("Description", $quizData['quizDescription']);
@@ -64,10 +65,6 @@ class QuizService implements IQuizService
 
     private function validateQuizData(array $quizData):bool{
         $isValid = true;
-
-        if (!isset($quizData['quizFile']) && !isset($quizData['quizText'])){
-            return false;
-        }
 
         return $isValid;
     }

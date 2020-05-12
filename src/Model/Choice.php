@@ -3,6 +3,8 @@
 
 namespace src\Model;
 
+use src\Model\AbstractClasses\AbstractDBModel;
+
 /**
  * Class Choice
  * Models a choice for a question.
@@ -11,7 +13,7 @@ namespace src\Model;
  * if it is a correct choice.
  * @package src\Model
  */
-class Choice
+class Choice extends AbstractDBModel
 {
     private int $id;
 
@@ -85,5 +87,18 @@ class Choice
         $this->isCorrect = $isCorrect;
     }
 
+    public function getPrimaryKeyColumn()
+    {
+        return "Id";
+    }
 
+    public function getTable()
+    {
+        return "choices";
+    }
+
+    public function getColumns()
+    {
+        return ["QuestionId", "Text", "IsCorrect"];
+    }
 }

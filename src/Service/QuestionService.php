@@ -4,7 +4,78 @@
 namespace src\Service;
 
 
-class QuestionService
+use MongoDB\BSON\Type;
+use src\Interfaces\IQuestionRepository;
+use src\Interfaces\IQuestionService;
+use src\Model\AbstractClasses\Types;
+use src\Model\Choice;
+use src\Model\Question;
+
+class QuestionService implements IQuestionService
 {
+    private IQuestionRepository $questionRepository;
+
+    public function __construct(IQuestionRepository $questionRepository)
+    {
+        $this->questionRepository = $questionRepository;
+    }
+
+    public function saveQuestionsFromFile(array $fileData, string $quizId): int
+    {
+        $fileContents = file_get_contents($fileData['quizFile']['tmp_name']);
+        return $this->saveQuestionsFromText($fileContents, $quizId);
+    }
+
+    public function saveQuestionsFromText(string $text, string $quizId): int
+    {
+        $questions = [];
+        $lines = getLinesFromText($text);
+        foreach($lines as $line){
+            $question = $this->createQuestionFromString($line, $quizId);
+            $questions[] = $question;
+        }
+
+        for($i = 0; $i < count($questions); $i++){
+            $questionId = $this->questionRepository->saveQuestion($questions[$i]);
+            if ($questionId < 0) return -1;
+
+            ServiceContainer::get("ChoiceService")->saveChoiceFromString($lines[$i], $questions[$i]->getPrimaryKey(),
+                                    $questions[$i]->__get("Type"));
+
+        }
+
+
+        return 0;
+    }
+
+    private function createChoicesFromString(string $line, int $questionId){
+        $choice = new Choice();
+
+    }
+
+    private function createQuestionFromString(string $line, string $quizId): Question{
+        $question = new Question();
+        $questionText = explode(":", $line)[0];
+        $question->__set("Text", $questionText);
+
+        $choicesAndAnswers = explode(":", $line)[1];
+        $chAndAnswersArr = explode("=", $choicesAndAnswers);
+
+        $choices = explode(",", $chAndAnswersArr[0]);
+        $answers = explode(",", $chAndAnswersArr[1]);
+
+        if ($choices[0] == ''){
+            $type = Types::FILL_IN;
+        } else if(count($answers) == 1 ){
+            $type = Types::MULTI_ONE;
+        }
+        else{
+            $type = Types::MULTI_MULTI;
+        }
+        $question->__set("Type", $type);
+        $question->__set("QuizId", $quizId);
+
+        return $question;
+    }
 
 }

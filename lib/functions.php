@@ -309,6 +309,16 @@ function getQuestion($line, $ID){
     return $question;
 }
 
+function getLinesFromText(string $text): array{
+    $lines = [];
+    foreach(preg_split("/((\r?\n)|(\r\n?))/", $text) as $line){
+        if ($line != ''){
+            $lines[] = $line;
+        }
+    }
+    return $lines;
+}
+
 function getQuestionByType($questions, $type){
     $qs = array();
     foreach ($questions as $question){

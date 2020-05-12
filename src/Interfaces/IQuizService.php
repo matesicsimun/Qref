@@ -8,7 +8,7 @@ use src\Model\Quiz;
 
 interface IQuizService
 {
-    public function saveQuiz(array $quizData):int;
+    public function saveQuiz(array $quizData, array $fileData):int;
 
     public function getQuiz(int $id): ?Quiz;
 

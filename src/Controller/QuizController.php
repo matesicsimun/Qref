@@ -26,7 +26,7 @@ class QuizController extends AbstractController
             $header->showView();
             $quizCreate->showView();
         }else{
-            $this->quizService->saveQuiz($_POST);
+            $this->quizService->saveQuiz($_POST, $_FILES);
             redirect("index?message=Quiz added!");
         }
     }
