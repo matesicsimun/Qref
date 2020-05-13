@@ -7,14 +7,15 @@ namespace src\View;
 use src\Interfaces\IView;
 use src\Model\AbstractClasses\Types;
 use src\Model\Question;
+use src\Model\Quiz;
 
 class QuizTestView implements IView
 {
-    private array $questions;
+    private Quiz $quiz;
 
-    public function __construct(array $questions)
+    public function __construct(Quiz $quiz)
     {
-        $this->questions = $questions;
+        $this->quiz = $quiz;
     }
 
     /**
@@ -26,7 +27,17 @@ class QuizTestView implements IView
         $form->add_attribute(new \HTMLAttribute("action", "solve_quiz"));
         $form->add_attribute(new \HTMLAttribute("method", "post"));
 
-        foreach($this->questions as $question){
+        $hiddenQuizId = new \HTMLInputElement();
+        $hiddenQuizId->add_attribute(new \HTMLAttribute("type", "hidden"));
+        $hiddenQuizId->add_attribute(new \HTMLAttribute("name", "quizId"));
+        $hiddenQuizId->add_attribute(new \HTMLAttribute("id", "quizId"));
+        $hiddenQuizId->add_attribute(new \HTMLAttribute("value", $this->quiz->getQuizId()));
+
+        $title = new \HTMLHElement(1);
+        $title->add_child(new \HTMLTextNode($this->quiz->getName()));
+        $form->add_child($title);
+
+        foreach($this->quiz->getQuestions() as $question){
             $form->add_children($this->getHtmlForQuestion($question));
         }
 

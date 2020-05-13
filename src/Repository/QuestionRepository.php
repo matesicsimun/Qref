@@ -20,4 +20,18 @@ class QuestionRepository implements IQuestionRepository
 
         return 0;
     }
+
+    public function getAllByQuizId(string $quizId): array
+    {
+        $question = new Question();
+        return $question->loadAll("Where quizId = '$quizId'");
+    }
+
+    public function getQuestionById(int $questionId): Question
+    {
+        $question = new Question();
+        $question->load($questionId);
+
+        return $question;
+    }
 }

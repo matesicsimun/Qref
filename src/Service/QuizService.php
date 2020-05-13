@@ -63,29 +63,80 @@ class QuizService implements IQuizService
         return $quiz;
     }
 
+    private function constructQuizWithoutQuestions(Quiz $quiz):Quiz{
+        $quiz->setQuizId($quiz->getPrimaryKey());
+        $quiz->setName($quiz->__get("Name"));
+        $quiz->setDescription($quiz->__get("Description"));
+        $quiz->setCommentsEnabled($quiz->__get("CommentsEnabled"));
+        $quiz->setIsPublic(($quiz->__get("IsPublic")));
+        $quiz->setAuthor(ServiceContainer::get("UserService")->loadUserById($quiz->__get("AuthorId")));
+
+        return $quiz;
+    }
+
+    private function constructQuizFull(Quiz $quiz){
+        $quiz = $this->constructQuizWithoutQuestions($quiz);
+        $quiz->setQuestions(ServiceContainer::get("QuestionService")->getQuizQuestions($quiz->getQuizId()));
+
+        return $quiz;
+    }
+
     private function validateQuizData(array $quizData):bool{
         $isValid = true;
 
         return $isValid;
     }
 
-    public function getQuiz(int $id): ?Quiz
+    public function getQuiz(string $id): ?Quiz
     {
-        // TODO: Implement getQuiz() method.
+        return $this->constructQuizFull($this->quizRepository->getQuiz($id));
     }
+
 
     public function getAll(): array
     {
-        // TODO: Implement getAll() method.
+        $quizzes = $this->quizRepository->getAll();
+        $constructed = [];
+        foreach($quizzes as $quiz){
+            $constructed[] = $this->constructQuizWithoutQuestions($quiz);
+        }
+
+        return $constructed;
     }
 
     public function getAllByAuthor(int $authorId): array
     {
-        // TODO: Implement getAllByAuthor() method.
+        $arr =  $this->quizRepository->getAllByAuthorId($authorId);
+        $constructed = [];
+        foreach($arr as $quiz){
+            $constructed[] = $this->constructQuizWithoutQuestions($quiz);
+        }
+
+        return $constructed;
     }
 
     public function getAllByAuthorIUserName(string $authorUserName): array
     {
         // TODO: Implement getAllByAuthorIUserName() method.
+    }
+
+    public function getQuizResults(array $solvedQuizData): array
+    {
+        // TODO: Implement getQuizResults() method.
+    }
+
+    public function getAllNotByAuthor(int $authorId): ?array
+    {
+        $all = $this->getAll();
+        $byAuthor = $this->getAllByAuthor($authorId);
+        $notByAuthor = [];
+
+        foreach($all as $quiz){
+            if (!in_array($quiz, $byAuthor)){
+                $notByAuthor[] = $quiz;
+            }
+        }
+
+        return $notByAuthor;
     }
 }

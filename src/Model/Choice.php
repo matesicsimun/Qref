@@ -17,8 +17,6 @@ class Choice extends AbstractDBModel
 {
     private int $id;
 
-    private Question $question;
-
     private string $text;
 
     private bool $isCorrect;
@@ -74,7 +72,7 @@ class Choice extends AbstractDBModel
     /**
      * @return bool
      */
-    public function isCorrect(): bool
+    public function getIsCorrect(): bool
     {
         return $this->isCorrect;
     }

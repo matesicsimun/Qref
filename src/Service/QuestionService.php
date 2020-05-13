@@ -4,6 +4,7 @@
 namespace src\Service;
 
 
+
 use MongoDB\BSON\Type;
 use src\Interfaces\IQuestionRepository;
 use src\Interfaces\IQuestionService;
@@ -44,13 +45,35 @@ class QuestionService implements IQuestionService
 
         }
 
-
         return 0;
     }
 
-    private function createChoicesFromString(string $line, int $questionId){
-        $choice = new Choice();
+    public function getQuizQuestions(string $quizId):array{
+        $questions = $this->questionRepository->getAllByQuizId($quizId);
+        $constructed = [];
+        foreach($questions as $question){
+            $constructed[] = $this->constructQuestion($question);
+        }
 
+        return $constructed;
+    }
+
+    private function constructQuestion(Question $question){
+        $question->setId($question->getPrimaryKey());
+        $question->setText($question->__get("Text"));
+        $question->setChoices(ServiceContainer::get("ChoiceService")->getChoicesByQuestionId($question->getId()));
+
+        $type = $question->__get("Type");
+        if ($type === '1'){
+            $question->setType(Types::MULTI_ONE);
+        }else if ($type === '2'){
+            $question->setType(Types::MULTI_MULTI);
+        }else{
+            $question->setType(Types::FILL_IN);
+        }
+
+
+        return $question;
     }
 
     private function createQuestionFromString(string $line, string $quizId): Question{
@@ -76,6 +99,10 @@ class QuestionService implements IQuestionService
         $question->__set("QuizId", $quizId);
 
         return $question;
+    }
+
+    public function getQuestionById(int $questionId){
+        return $this->constructQuestion($this->questionRepository->getQuestionById($questionId));
     }
 
 }

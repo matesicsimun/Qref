@@ -20,4 +20,10 @@ class ChoiceRepository implements IChoiceRepository
 
         return 0;
     }
+
+    public function getChoicesByQuestionid(int $questionId): array
+    {
+        $choice = new Choice();
+        return $choice->loadAll("where QuestionId = '$questionId'");
+    }
 }

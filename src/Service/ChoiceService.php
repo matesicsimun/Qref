@@ -56,4 +56,22 @@ class ChoiceService implements IChoiceService
 
         return 0;
     }
+
+    private function constructChoice(Choice $choice){
+        $choice->setText($choice->__get("Text"));
+        $choice->setId($choice->getPrimaryKey());
+        $choice->setIsCorrect($choice->__get("IsCorrect"));
+
+        return $choice;
+    }
+
+    public function getChoicesByQuestionId(int $questionId): array
+    {
+        $arr = $this->choiceRepository->getChoicesByQuestionid($questionId);
+        $constructed = [];
+        foreach($arr as $choice){
+            $constructed[] = $this->constructChoice($choice);
+        }
+        return $constructed;
+    }
 }

@@ -10,7 +10,7 @@ interface IQuizService
 {
     public function saveQuiz(array $quizData, array $fileData):int;
 
-    public function getQuiz(int $id): ?Quiz;
+    public function getQuiz(string $id): ?Quiz;
 
     public function getAll(): array;
 
@@ -18,5 +18,5 @@ interface IQuizService
 
     public function getAllByAuthorIUserName(string $authorUserName): array;
 
-
+    public function getQuizResults(array $solvedQuizData):array;
 }

@@ -134,6 +134,7 @@ class UserService implements IUserService
         return $this->setUserAttributes($userNoAttributes);
     }
 
+
     public function loadUserById(int $id): ?User
     {
         $userNoAttributes = $this->userRepository->getUser($id);

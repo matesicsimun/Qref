@@ -30,3 +30,4 @@ require_once "HTMLSpanElement.php";
 require_once "HTMLStyleElement.php";
 require_once "HTMLHElement.php";
 require_once "HTMLTextAreaElement.php";
+require_once "HTMLCaptionElement.php";

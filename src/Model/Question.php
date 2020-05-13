@@ -4,6 +4,7 @@
 namespace src\Model;
 
 use src\Model\AbstractClasses\AbstractDBModel;
+use src\Model\AbstractClasses\Types;
 
 /**
  * Class Question
@@ -20,21 +21,14 @@ class Question extends AbstractDBModel
 {
     private int $id;
 
-    /**
-     * The Quiz this question
-     * belongs to.
-     * @var Quiz
-     */
-    private Quiz $quiz;
-
     private string $text;
 
     /**
      * The type of the question.
      * MULTI_ONE, MULTI_MULTI or FILL_IN.
-     * @var Types
+     * @var int
      */
-    private Types $type;
+    private int $type;
 
     /**
      * An array containing Choice objects.
@@ -98,17 +92,17 @@ class Question extends AbstractDBModel
     }
 
     /**
-     * @return Types
+     * @return int
      */
-    public function getType(): Types
+    public function getType(): int
     {
         return $this->type;
     }
 
     /**
-     * @param Types $type
+     * @param  int
      */
-    public function setType(Types $type): void
+    public function setType(int $type): void
     {
         $this->type = $type;
     }

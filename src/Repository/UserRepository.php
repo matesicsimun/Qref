@@ -40,7 +40,10 @@ class UserRepository implements IUserRepository
 
     public function getUser(int $id): User
     {
-        // TODO: Implement getUser() method.
+        $user = new User();
+        $user->load($id);
+
+        return $user;
     }
 
     public function deleteUser(int $id)

@@ -12,11 +12,14 @@ interface IQuizRepository
 
     public function updateQuiz(Quiz $quiz): int;
 
-    public function getQuiz(int $id): ?Quiz;
+    public function getQuiz(string $id): ?Quiz;
+
+    public function getAll():array;
 
     public function getQuizByName(string $name): ?Quiz;
 
     public function getAllFromUsername(string $username): array;
 
+    public function getAllByAuthorId(int $authorId) : array;
 
 }

@@ -35,7 +35,7 @@ class QuizRepository implements IQuizRepository
         return 0;
     }
 
-    public function getQuiz(int $id): ?Quiz
+    public function getQuiz(string $id): ?Quiz
     {
         $quiz = new Quiz();
         $quiz->load($id);
@@ -60,5 +60,17 @@ class QuizRepository implements IQuizRepository
     public function getAllFromUsername(string $username): array
     {
         // TODO: Implement getAllFromUsername() method.
+    }
+
+    public function getAll(): array
+    {
+        $quiz = new Quiz();
+        return $quiz->loadAll();
+    }
+
+    public function getAllByAuthorId(int $authorId): array
+    {
+        $quiz = new Quiz();
+        return $quiz->loadAll("where authorId = '$authorId'");
     }
 }
