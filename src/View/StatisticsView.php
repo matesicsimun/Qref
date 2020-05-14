@@ -23,6 +23,8 @@ class StatisticsView implements IView
 
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("border", "true"));
+        $table->add_attribute(new \HTMLAttribute("style", "text-align:center"));
+        $table->add_attribute(new \HTMLAttribute("width", "500"));
 
         $caption = new \HTMLCaptionElement();
         $caption->add_child(new \HTMLTextNode("Quiz statistics"));
