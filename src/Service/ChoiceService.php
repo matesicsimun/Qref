@@ -65,6 +65,10 @@ class ChoiceService implements IChoiceService
         return $choice;
     }
 
+    public function getChoiceById(int $choiceId):Choice{
+        return $this->constructChoice($this->choiceRepository->getChoiceById($choiceId));
+    }
+
     public function getChoicesByQuestionId(int $questionId): array
     {
         $arr = $this->choiceRepository->getChoicesByQuestionid($questionId);

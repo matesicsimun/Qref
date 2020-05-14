@@ -21,6 +21,12 @@ class ChoiceRepository implements IChoiceRepository
         return 0;
     }
 
+    public function getChoiceById(int $choiceId): Choice{
+        $choice = new Choice();
+        $choice->load($choiceId);
+        return $choice;
+    }
+
     public function getChoicesByQuestionid(int $questionId): array
     {
         $choice = new Choice();

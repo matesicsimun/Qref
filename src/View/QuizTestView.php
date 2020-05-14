@@ -24,7 +24,7 @@ class QuizTestView implements IView
     public function showView(): void
     {
         $form = new \HTMLFormElement();
-        $form->add_attribute(new \HTMLAttribute("action", "solve_quiz"));
+        $form->add_attribute(new \HTMLAttribute("action", "quiz_solve"));
         $form->add_attribute(new \HTMLAttribute("method", "post"));
 
         $hiddenQuizId = new \HTMLInputElement();
@@ -32,13 +32,16 @@ class QuizTestView implements IView
         $hiddenQuizId->add_attribute(new \HTMLAttribute("name", "quizId"));
         $hiddenQuizId->add_attribute(new \HTMLAttribute("id", "quizId"));
         $hiddenQuizId->add_attribute(new \HTMLAttribute("value", $this->quiz->getQuizId()));
+        $form->add_child($hiddenQuizId);
 
         $title = new \HTMLHElement(1);
         $title->add_child(new \HTMLTextNode($this->quiz->getName()));
         $form->add_child($title);
 
+        $br = new \HTMLBrElement();
         foreach($this->quiz->getQuestions() as $question){
             $form->add_children($this->getHtmlForQuestion($question));
+            $form->add_child($br);
         }
 
         $submit = new \HTMLInputElement();
@@ -60,22 +63,38 @@ class QuizTestView implements IView
             $input->add_attribute(new \HTMLAttribute("type", "text"));
             $input->add_attribute(new \HTMLAttribute("required", "true"));
             $input->add_attribute(new \HTMLAttribute("name", $question->getId()));
-            $input->add_attribute(new \HTMLAttribute("for", $question->getId()));
-        } else {
+            $input->add_attribute(new \HTMLAttribute("id", $question->getId()));
+        } else if ($question->getType() === Types::MULTI_ONE)
+        {
             $input = new \HTMLSelectElement();
             $input->add_attribute(new \HTMLAttribute("id", $question->getId()));
             $input->add_attribute(new \HTMLAttribute("name", $question->getId()));
 
             foreach($question->getChoices() as $choice){
                 $option = new \HTMLOptionElement();
-                $option->add_attribute(new \HTMLAttribute("value", $choice->getIsCorrect()));
+                $option->add_attribute(new \HTMLAttribute("value", $choice->getId()));
                 $option->add_child(new \HTMLTextNode($choice->getText()));
                 $input->add_child($option);
             }
+        }else{
+            $collection->add($label);
+            foreach($question->getChoices() as $choice){
+                $in = new \HTMLInputElement();
+                $in->add_attribute(new \HTMLAttribute("type", "checkbox"));
+                $in->add_attribute(new \HTMLAttribute("name", $question->getId()."&".$choice->getId()));
+                $in->add_attribute(new \HTMLAttribute("id", $question->getId()));
+                $in->add_attribute(new \HTMLAttribute("value", $choice->getId()));
+                $in->add_child(new \HTMLTextNode($choice->getText()));
+                $collection->add($in);
+            }
+
         }
 
-        $collection->add($label);
-        $collection->add($input);
+        if($question->getType() != Types::MULTI_MULTI){
+            $collection->add($label);
+            $collection->add($input);
+        }
+
 
         return $collection;
     }

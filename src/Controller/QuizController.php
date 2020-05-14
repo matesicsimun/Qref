@@ -5,10 +5,12 @@ namespace src\Controller;
 
 
 use src\Interfaces\IQuizService;
+use src\Repository\QuizRepository;
 use src\Service\ServiceContainer;
 use src\View\HomeHeaderView;
 use src\View\HomePageView;
 use src\View\QuizCreateView;
+use src\View\QuizResultsView;
 use src\View\QuizTableView;
 use src\View\QuizTestView;
 
@@ -29,7 +31,11 @@ class QuizController extends AbstractController
                 $quizTestView->showView();
             }
         }else{
-
+            $results = $this->quizService->getQuizResults($_POST);
+            $quizResultsView = new QuizResultsView($results['answers'], $results['points'], $results['percentage']);
+            $header = new HomePageView(getSessionData('username'));
+            $header->showView();
+            $quizResultsView->showView();
         }
     }
 

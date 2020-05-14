@@ -128,6 +128,13 @@ class Question extends AbstractDBModel
      */
     public function getCorrectChoices(): array
     {
+        if (empty($this->correctChoices) || $this->correctChoices == null){
+            $this->correctChoices = array_filter($this->choices,
+                function ($choice){
+                    return $choice->getIsCorrect() == 1;
+                });
+            $this->correctChoices = array_values($this->correctChoices);
+        }
         return $this->correctChoices;
     }
 

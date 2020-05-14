@@ -6,6 +6,9 @@ namespace src\Service;
 
 use src\Interfaces\IQuizRepository;
 use src\Interfaces\IQuizService;
+use src\Model\AbstractClasses\Types;
+use src\Model\Choice;
+use src\Model\Question;
 use src\Model\Quiz;
 
 class QuizService implements IQuizService
@@ -120,9 +123,149 @@ class QuizService implements IQuizService
         // TODO: Implement getAllByAuthorIUserName() method.
     }
 
+    private function getQuestionForSolvedQuiz(string $key): Question{
+        if (strpos($key, "&") !== false){
+            $questionId = explode("&", $key)[0];
+        }else{
+            $questionId = $key;
+        }
+
+        return ServiceContainer::get("QuestionService")->getQuestionById(intval($questionId));
+    }
+
+    private function getChoiceSolvedQuiz(string $key):Choice{
+        $choiceId = explode("&", $key)[1];
+        return ServiceContainer::get("ChoiceService")->getChoiceById(intval($choiceId));
+    }
+
+    private function gradeFillInQuestion($userAnswer, $correctAnswer): float{
+
+        if (strcasecmp($correctAnswer, $userAnswer) === 0) {
+            return 1;
+        }
+        else {
+            similar_text($correctAnswer, $userAnswer, $percentage);
+            if ($percentage >= 90){
+                return 1;
+            }else if ($percentage >= 70){
+               return 0.5;
+            }else{
+                return 0;
+            }
+        }
+    }
+
+    private function updateUserAnswerCorrectAnswer(array &$userAnswerCorrectAnswer, int $questionId,
+                                                                    $userAnswers, $correctAnswers){
+        $userAnswerStr = '';
+        $correctAnswerStr = '';
+        foreach($userAnswers as $userAnswer){
+            $userAnswerStr .= $userAnswer . ' ';
+        }
+        foreach($correctAnswers as $correctAnswer){
+            $correctAnswerStr .= $correctAnswer . ' ';
+        }
+
+        $userAnswerCorrectAnswer[$questionId] = [
+            "userAnswer" => $userAnswerStr,
+            "correctAnswer" => $correctAnswerStr
+        ];
+    }
+
     public function getQuizResults(array $solvedQuizData): array
     {
-        // TODO: Implement getQuizResults() method.
+        $correct = 0;
+        $multiAnswers = [];
+        $correctAnswerUserAnswer = [];
+
+        $quizId = $solvedQuizData['quizId'];
+        $quiz = $this->getQuiz($quizId);
+
+        foreach($solvedQuizData as $key => $value){
+            if ($key == 'quizId') continue;
+
+            $question = $this->getQuestionForSolvedQuiz($key);
+            if ($question->getType() === Types::FILL_IN){
+                $userAnswer = $value;
+                $correctAnswer = $question->getCorrectChoices()[0];
+                $correct += $this->gradeFillInQuestion($userAnswer, $correctAnswer->getText());
+
+                $this->updateUserAnswerCorrectAnswer($correctAnswerUserAnswer, $question->getId(),
+                                                            [$userAnswer], [$correctAnswer->getText()]);
+
+            }else if ($question->getType() === Types::MULTI_ONE){
+                $choice = ServiceContainer::get("ChoiceService")->getChoiceById(intval($value));
+                if ($choice->getIsCorrect() == 1){
+                    $correct++;
+                }
+
+                $this->updateUserAnswerCorrectAnswer($correctAnswerUserAnswer, $question->getId(),
+                                                        [$choice->getText()], [$question->getCorrectChoices()[0]->getText()]);
+            }else{
+                $choice =  $this->getChoiceSolvedQuiz($key);
+                $multiAnswers[$question->getId()][] = $choice->getId();
+            }
+        }
+        $correct += $this->getPointsForMulti($multiAnswers, $correctAnswerUserAnswer);
+
+        $results = $this->getResults($quiz->getQuestions(), $correctAnswerUserAnswer, $correct);
+
+        return $results;
+    }
+
+    private function getResults(array $quizQuestions, array $correctAnswerUserAnswer, float $points){
+        $results = [];
+
+        foreach($quizQuestions as $question){
+            $answers[$question->getText()] = [
+                "userAnswer" =>
+                    isset($correctAnswerUserAnswer[$question->getId()]) ? $correctAnswerUserAnswer[$question->getId()]["userAnswer"] : "User didn't input",
+                "correctAnswer" => implode(",", array_map(function($choice){
+                    return $choice->getText();
+                }, $question->getCorrectChoices()))];
+        }
+
+        $results['points'] = $points;
+        $results['percentage'] = $this->calculatePercentage($points, count($quizQuestions));
+        $results["answers"] = $answers;
+
+        return $results;
+    }
+
+    private function calculatePercentage(float $correctNum, int $totalNum):float{
+        return $correctNum/$totalNum * 100;
+    }
+
+    private function getPointsForMulti(array $multiAnswers, array &$userAnswerCorrectAnswer):int{
+
+        $points = 0;
+        foreach($multiAnswers as $questionId => $choicesIds){
+            $question = ServiceContainer::get("QuestionService")->getQuestionById(intval($questionId));
+
+            $noOfCorrectChoices = count($question->getCorrectChoices());
+            $noOfUserCorrectChoices = 0;
+
+            $choices = [];
+            foreach($choicesIds as $choiceId){
+                $choices[] = ServiceContainer::get("ChoiceService")->getChoiceById(intval($choiceId));
+            }
+            $textUserChoices = array_map(function($choice) {return $choice->getText(); }, $choices);
+            $textCorrectChoices = array_map(function($choice) {return $choice->getText();}, $question->getCorrectChoices());
+
+            $this->updateUserAnswerCorrectAnswer($userAnswerCorrectAnswer, intval($questionId),
+                                                    $textUserChoices, $textCorrectChoices);
+
+            foreach($choices as $choice){
+                if ($choice->getIsCorrect() == 1) $noOfUserCorrectChoices++;
+            }
+            if ($noOfUserCorrectChoices === $noOfCorrectChoices){
+                $points += 1;
+            }else if($noOfUserCorrectChoices = $noOfCorrectChoices-1 && $noOfUserCorrectChoices !== 1){
+                $points += 0.5;
+            }
+        }
+
+        return $points;
     }
 
     public function getAllNotByAuthor(int $authorId): ?array
