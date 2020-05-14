@@ -18,3 +18,6 @@ ServiceContainer::register("QuestionService", new \src\Service\QuestionService($
 
 $choiceRepository = new ChoiceRepository();
 ServiceContainer::register("ChoiceService", new ChoiceService($choiceRepository));
+
+$statisticsRepository = new \src\Repository\StatisticsRepository();
+ServiceContainer::register("StatisticsService", new \src\Service\StatisticsService($statisticsRepository));

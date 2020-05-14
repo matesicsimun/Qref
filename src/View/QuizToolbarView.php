@@ -14,7 +14,6 @@ class QuizToolbarView implements \src\Interfaces\IView
     {
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("width",1000));
-        $table->add_attribute(new \HTMLAttribute("border","true"));
 
         $row = new \HTMLRowElement();
         $row->add_attribute(new \HTMLAttribute("style", "text-align:center"));

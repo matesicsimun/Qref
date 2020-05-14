@@ -18,5 +18,5 @@ interface IQuizService
 
     public function getAllByAuthorIUserName(string $authorUserName): array;
 
-    public function getQuizResults(array $solvedQuizData):array;
+    public function getQuizResults(array $solvedQuizData, bool $isLoggedIn):array;
 }

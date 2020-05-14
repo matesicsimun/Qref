@@ -6,7 +6,7 @@ namespace src\Model\AbstractClasses;
 
 use src\Database\DBPool;
 use src\Interfaces\DBModel;
-use src\Model\NotFoundException;
+use src\Model\Exceptions\NotFoundException;
 
 abstract class AbstractDBModel implements DBModel{
 
@@ -28,7 +28,7 @@ abstract class AbstractDBModel implements DBModel{
         $stmt->execute(array($pk));
 
         if (1 !== $stmt->rowCount()){
-            throw new NotFoundException();
+            return null;
         }
 
         $this->data = $stmt->fetch();
@@ -52,10 +52,9 @@ abstract class AbstractDBModel implements DBModel{
         $columns = $this->getColumns();
 
         if (null === $this->pk){
-
             $values = array();
             $placeHolders = array();
-
+            
             foreach($columns as $column){
                 $values[] = $this->data->$column;
                 $placeHolders[] = "?";

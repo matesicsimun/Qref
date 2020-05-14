@@ -21,6 +21,9 @@ class AccountView implements IView
      */
     public function showView(): void
     {
+        $br = new \HTMLBrElement();
+        echo $br->get_html();
+
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("width", 1000));
         $table->add_attribute(new \HTMLAttribute("border", "true"));
@@ -58,5 +61,7 @@ class AccountView implements IView
         $table->add_child($row2);
 
         echo $table->get_html();
+        echo $br->get_html();
+
     }
 }

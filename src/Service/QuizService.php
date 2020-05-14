@@ -172,7 +172,7 @@ class QuizService implements IQuizService
         ];
     }
 
-    public function getQuizResults(array $solvedQuizData): array
+    public function getQuizResults(array $solvedQuizData, bool $isLoggedIn): array
     {
         $correct = 0;
         $multiAnswers = [];
@@ -209,6 +209,11 @@ class QuizService implements IQuizService
         $correct += $this->getPointsForMulti($multiAnswers, $correctAnswerUserAnswer);
 
         $results = $this->getResults($quiz->getQuestions(), $correctAnswerUserAnswer, $correct);
+
+        if ($isLoggedIn == true){
+            ServiceContainer::get("StatisticsService")->saveStatistic(getSessionData('userId'), $quizId,
+                                                                    $results['percentage'], new \DateTime());
+        }
 
         return $results;
     }

@@ -31,35 +31,45 @@ class QuizController extends AbstractController
                 $quizTestView->showView();
             }
         }else{
-            $results = $this->quizService->getQuizResults($_POST);
+            $results = $this->quizService->getQuizResults($_POST, isLoggedIn());
             $quizResultsView = new QuizResultsView($results['answers'], $results['points'], $results['percentage']);
-            $header = new HomePageView(getSessionData('username'));
-            $header->showView();
+            if (isLoggedIn()){
+                $header = new HomePageView(getSessionData('username'));
+                $header->showView();
+            }
             $quizResultsView->showView();
         }
     }
 
     public function showQuizzes(){
-        $header = new HomeHeaderView(getSessionData("username"));
+        if (isLoggedIn()){
+            $header = new HomeHeaderView(getSessionData("username"));
 
-        $userQuizzes = $this->quizService->getAllByAuthor(getSessionData("userId"));
-        $otherQuizzes = $this->quizService->getAllNotByAuthor(getSessionData("userId"));
-        $quizTable = new QuizTableView($userQuizzes, $otherQuizzes);
+            $userQuizzes = $this->quizService->getAllByAuthor(getSessionData("userId"));
+            $otherQuizzes = $this->quizService->getAllNotByAuthor(getSessionData("userId"));
+            $quizTable = new QuizTableView($userQuizzes, $otherQuizzes);
 
-        $header->showView();
-        $quizTable->showView();
+            $header->showView();
+            $quizTable->showView();
+        } else{
+            redirect("index");
+        }
     }
 
     public function createQuiz(){
-        if (null == $_POST){
-            $header = new HomePageView(getSessionData('username'));
-            $quizCreate = new QuizCreateView(getSessionData('userId'));
+        if (isLoggedIn()){
+            if (null == $_POST){
+                $header = new HomePageView(getSessionData('username'));
+                $quizCreate = new QuizCreateView(getSessionData('userId'));
 
-            $header->showView();
-            $quizCreate->showView();
+                $header->showView();
+                $quizCreate->showView();
+            }else{
+                $this->quizService->saveQuiz($_POST, $_FILES);
+                redirect("index?message=Quiz added!");
+            }
         }else{
-            $this->quizService->saveQuiz($_POST, $_FILES);
-            redirect("index?message=Quiz added!");
+            redirect("index");
         }
     }
 

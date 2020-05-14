@@ -15,6 +15,7 @@ use src\View\HeaderView;
 use src\View\HomeHeaderView;
 use src\View\HomePageView;
 use src\View\RegisterView;
+use src\View\StatisticsView;
 
 class UserController extends AbstractController
 {
@@ -29,31 +30,42 @@ class UserController extends AbstractController
     }
 
     public function showAccountInfo(){
-        $user = $this->userService->loadUserByUsername($_SESSION['username']);
-        if($user){
-            $accountView = new AccountView($user);
-            $header = new HomePageView($user->getUserName());
-            $header->showView();
-            $accountView->showView();
+        if (isLoggedIn()){
+            $user = $this->userService->loadUserByUsername($_SESSION['username']);
+            if($user){
+                $accountView = new AccountView($user);
+                $header = new HomePageView($user->getUserName());
+                $header->showView();
+                $accountView->showView();
+
+                $statisticsView = new StatisticsView(ServiceContainer::get("StatisticsService")
+                                                ->getViewStatisticsForUser(getSessionData('userId')));
+                $statisticsView->showView();
+            }else{
+                redirect("index");
+            }
         }else{
             redirect("index");
         }
     }
 
     public function changePassword(){
-        if (null == $_POST){
-            $changePasswordView = new ChangePasswordView();
-            $changePasswordView->showView();
-        } else {
-            if ($this->userService->checkPasswordForUser($_SESSION['username'], $_POST['passwordOld'])){
-                $code = $this->userService->updateUserPassword($_SESSION['username'], $_POST['passwordNew']);
+        if (isLoggedIn()){
+            if (null == $_POST){
+                $changePasswordView = new ChangePasswordView();
+                $changePasswordView->showView();
+            } else {
+                if ($this->userService->checkPasswordForUser($_SESSION['username'], $_POST['passwordOld'])){
+                    $code = $this->userService->updateUserPassword($_SESSION['username'], $_POST['passwordNew']);
 
-                if ($code < 0){
-                    redirect("change_password?message=$code");
+                    if ($code < 0){
+                        redirect("change_password?message=$code");
+                    }
                 }
+                redirect("index");
             }
-            redirect("index");
         }
+        redirect("index");
     }
 
     public function registerUser(){
