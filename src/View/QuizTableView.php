@@ -35,7 +35,10 @@ class QuizTableView implements IView
         $row = new \HTMLRowElement();
 
         $name = new \HTMLCellElement();
-        $name->add_text($quiz->getName());
+        $nameLink = new \HTMLAElement();
+        $nameLink->add_attribute(new \HTMLAttribute("href", "quiz_details?quizId=".$quiz->getQuizId()));
+        $nameLink->add_child(new \HTMLTextNode($quiz->getName()));
+        $name->add_child($nameLink);
 
         $description = new \HTMLCellElement();
         $description->add_text($quiz->getDescription());

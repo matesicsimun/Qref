@@ -16,4 +16,6 @@ class MessageCodes
     const USER_DATA_INVALID = 107;
     const REGISTER_UNSUCCESSFUL = 108;
     const EDIT_SUCCESSFUL = 109;
+    const COMMENTING_FAILED = 110;
+    const COMMENTING_SUCCESSFUL = 111;
 }

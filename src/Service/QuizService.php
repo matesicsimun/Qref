@@ -76,6 +76,15 @@ class QuizService implements IQuizService
         $quiz->setAuthor(ServiceContainer::get("UserService")->loadUserById($quiz->__get("AuthorId")));
         $quiz->setTimeLimit($quiz->__get("TimeLimit"));
 
+        $commentService = ServiceContainer::get("CommentService");
+        $comments = $commentService->getQuizComments($quiz->getQuizId());
+
+        if ($comments){
+            $quiz->setComments($comments);
+        }else{
+            $quiz->setComments(array());
+        }
+
         return $quiz;
     }
 
@@ -236,6 +245,9 @@ class QuizService implements IQuizService
             $results['timeOut'] = false;
         }
 
+        $results['commentsEnabled'] = $quiz->getCommentsEnabled();
+        $results['quizId'] = $quiz->getQuizId();
+
         return $results;
     }
 
@@ -312,13 +324,35 @@ class QuizService implements IQuizService
     public function updateQuiz(array $quizData)
     {
         $quizId = $quizData['quizId'];
+        $quiz = $this->getQuiz($quizId);
+
+        if (isset($quizData['commentsEnabled']) && !$quiz->getCommentsEnabled()){
+            $quiz->setCommentsEnabled(true);
+        }else{
+            $quiz->setCommentsEnabled(false);
+        }
+
+        if (isset($quizData['isPublic']) && !$quiz->getIsPublic()){
+            $quiz->setIsPublic(true);
+        }else{
+            $quiz->setIsPublic(false);
+        }
+
+        if (isset($quizData['description']) && $quizData['description'] != ''){
+            $quiz->setDescription($quizData['description']);
+        }
 
         $multiMulti = [];
         foreach($quizData as $name => $value){
-            if ($name == 'quizId') continue;
+            if ($name == 'quizId' || $name ==  'description' ||
+                $name == 'isPublic' || $name == 'commentsEnabled') continue;
 
             if (strpos("&", $name)){
+                $parts = explode("&", $name);
 
+                $questionId = intval($parts[0]);
+                $choiceId = intval($parts[1]);
+                $multiMulti[$questionId][] = $choiceId;
             }else{
                 $questionId = intval($name);
                 $questionService = ServiceContainer::get("QuestionService");
@@ -326,11 +360,8 @@ class QuizService implements IQuizService
                 $question = $questionService->getQuestionById($questionId);
                 if ($question->getType() === Types::FILL_IN && $value!=''){
                     $questionService->setNewFillInChoice($questionId, $value);
-
-                }else if ($question->getType() === Types::MULTI_ONE){
-                    $questionService->setNewMultiChoice($questionId, $value);
-                }else{
-                    $multiMulti[$questionId][] = $value;
+                }else {
+                    $questionService->setNewMultiChoice($questionId, intval($value));
                 }
             }
         }

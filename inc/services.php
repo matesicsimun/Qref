@@ -21,3 +21,6 @@ ServiceContainer::register("ChoiceService", new ChoiceService($choiceRepository)
 
 $statisticsRepository = new \src\Repository\StatisticsRepository();
 ServiceContainer::register("StatisticsService", new \src\Service\StatisticsService($statisticsRepository));
+
+$commentRepository = new \src\Repository\CommentRepository();
+ServiceContainer::register("CommentService", new \src\Service\CommentService($commentRepository));

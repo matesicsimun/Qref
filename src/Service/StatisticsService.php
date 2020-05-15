@@ -103,7 +103,7 @@ class StatisticsService implements IStatisticsService
         for($i = 0; $i < count($sums); $i++){
             $averages[$names[$i]] = $sums[$names[$i]] / $counts[$names[$i]];
         }
-     
+
         return ["averages"=>$averages, "counts"=>$counts];
     }
 

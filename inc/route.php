@@ -63,3 +63,16 @@ AbstractRoute::register("quiz_edit", new DefaultRoute("quiz_edit", array(
     "controller"=>"QuizController",
     "action"=>"editQuiz"
 )));
+
+AbstractRoute::register("save_comment", new DefaultRoute("save_comment", array(
+    "controller"=>"CommentController",
+    "action"=>"saveComment"
+)));
+
+
+AbstractRoute::register("quiz_details", new DefaultRoute("quiz_details", array(
+    "controller"=>"QuizController",
+    "action"=>"showQuizDetails"
+)));
+
+

@@ -10,6 +10,7 @@ use src\Service\ServiceContainer;
 use src\View\HomeHeaderView;
 use src\View\HomePageView;
 use src\View\QuizCreateView;
+use src\View\QuizDetailsView;
 use src\View\QuizEditView;
 use src\View\QuizResultsView;
 use src\View\QuizTableView;
@@ -33,7 +34,10 @@ class QuizController extends AbstractController
             }
         }else{
             $results = $this->quizService->getQuizResults($_POST, isLoggedIn());
-            $quizResultsView = new QuizResultsView($results['answers'], $results['points'], $results['percentage'], $results['timeOut']);
+
+            $quizResultsView = new QuizResultsView($results['answers'], $results['points'],
+                                    $results['percentage'], $results['timeOut'],
+                                    $results['quizId'], intval(getSessionData("userId")), $results['commentsEnabled']);
             if (isLoggedIn()){
                 $header = new HomePageView(getSessionData('username'));
                 $header->showView();
@@ -45,8 +49,10 @@ class QuizController extends AbstractController
 
     public function editQuiz(){
         if (isLoggedIn()) {
+
             if (null == $_POST){
                 if (get("quizId")){
+
                     $quiz = $this->quizService->getQuiz(get("quizId"));
                     if ($quiz->getAuthor()->getId() === getSessionData('userId')){
                         $quizEditView = new QuizEditView($quiz);
@@ -92,6 +98,23 @@ class QuizController extends AbstractController
                 redirect("index?message=Quiz added!");
             }
         }else{
+            redirect("index");
+        }
+    }
+
+    public function showQuizDetails(){
+        if (isLoggedIn()){
+            if(get("quizId")){
+                $view = new HomePageView(getSessionData('username'));
+                $details = new QuizDetailsView($this->quizService->getQuiz(get("quizId")));
+
+                $view->showView();
+                $details->showView();
+            }else{
+                redirect("index");
+            }
+        }
+        else{
             redirect("index");
         }
     }

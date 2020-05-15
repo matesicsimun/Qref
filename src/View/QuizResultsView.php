@@ -11,13 +11,21 @@ class QuizResultsView implements IView
     private float $percentage;
     private float $points;
     private array $answers;
+    private string $quizId;
+    private int $userId;
+    private bool $commentsEnabled;
 
-    public function __construct(array $answers, float $points, float $percentage, bool $isTimedOut)
+    public function __construct(array $answers, float $points,
+                                float $percentage, bool $isTimedOut,
+                                string $quizId, int $userId, bool $commentsEnabled)
     {
         $this->timedOut = $isTimedOut;
         $this->percentage = $percentage;
         $this->points = $points;
         $this->answers = $answers;
+        $this->quizId = $quizId;
+        $this->userId = $userId;
+        $this->commentsEnabled = $commentsEnabled;
     }
 
     /**
@@ -59,6 +67,47 @@ class QuizResultsView implements IView
             echo "correct answer = " . $answerArr['correctAnswer'];
             echo $br->get_html();
             echo $br->get_html();
+       }
+       if ($this->commentsEnabled == 1){
+           $h = new \HTMLHElement(5);
+           $h->add_child(new \HTMLTextNode("Enter comment: "));
+           $h->add_child(new \HTMLBrElement());
+           echo $h->get_html();
+
+           $commentForm = new \HTMLFormElement();
+           $commentForm->add_attribute(new \HTMLAttribute("method", "post"));
+           $commentForm->add_attribute(new \HTMLAttribute("action", "save_comment"));
+
+           $quizIdHidden = new \HTMLInputElement();
+           $quizIdHidden->add_attribute(new \HTMLAttribute("type", "hidden"));
+           $quizIdHidden->add_attribute(new \HTMLAttribute("value", $this->quizId));
+           $quizIdHidden->add_attribute(new \HTMLAttribute("name", "quizId"));
+
+           $commentForm->add_child($quizIdHidden);
+
+           $userIdHidden = new \HTMLInputElement();
+           $userIdHidden->add_attribute(new \HTMLAttribute("type", "hidden"));
+           $userIdHidden->add_attribute(new \HTMLAttribute("name", "userId"));
+           $userIdHidden->add_attribute(new \HTMLAttribute("value", $this->userId));
+
+           $commentForm->add_child($userIdHidden);
+
+           $commentLabel = new \HTMLLabelElement();
+           $commentLabel->add_attribute(new \HTMLAttribute("for", "comment"));
+           $commentLabel->add_child(new \HTMLTextNode("Comment: "));
+
+           $comment = new \HTMLInputElement();
+           $comment->add_attribute(new \HTMLAttribute("type", "text"));
+           $comment->add_attribute(new \HTMLAttribute("id", "comment"));
+           $comment->add_attribute(new \HTMLAttribute("name", "comment"));
+
+           $commentForm->add_child($comment);
+           $submit = new \HTMLInputElement();
+           $submit->add_attribute(new \HTMLAttribute("type", "submit"));
+           $submit->add_attribute(new \HTMLAttribute("value", "Add comment"));
+           $commentForm->add_child($submit);
+
+           echo $commentForm->get_html();
        }
     }
 }
