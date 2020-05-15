@@ -16,6 +16,7 @@ class Messages
         else if ($msgCode === MessageCodes::REGISTER_SUCCESSFUL) return "Registration complete!";
         else if ($msgCode === MessageCodes::USER_DATA_INVALID) return "Registration data invalid.";
         else if ($msgCode === MessageCodes::REGISTER_UNSUCCESSFUL) return "Registration failed.";
+        else if ($msgCode === MessageCodes::EDIT_SUCCESSFUL) return "Quiz successfully edited.";
         else{
             return "";
         }

@@ -35,8 +35,8 @@ class QuizEditView implements IView
 
         $h = new \HTMLHElement(3);
         $h->add_child(new \HTMLTextNode("Edit Quiz: " . $this->quiz->getName()));
+        $h->add_child(new \HTMLBrElement());
         echo $h->get_html();
-
 
         $questions = $this->quiz->getQuestions();
 

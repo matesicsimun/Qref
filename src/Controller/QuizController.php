@@ -44,15 +44,23 @@ class QuizController extends AbstractController
 
 
     public function editQuiz(){
-        if (null == $_POST){
-            if (get("quizId")){
-                $quiz = $this->quizService->getQuiz(get("quizId"));
-                $quizEditView = new QuizEditView($quiz);
-                $quizEditView->showView();
+        if (isLoggedIn()) {
+            if (null == $_POST){
+                if (get("quizId")){
+                    $quiz = $this->quizService->getQuiz(get("quizId"));
+                    if ($quiz->getAuthor()->getId() === getSessionData('userId')){
+                        $quizEditView = new QuizEditView($quiz);
+                        $quizEditView->showView();
+                    }else{
+                        redirect("index");
+                    }
+                }
+            }else{
+                $messageCode = $this->quizService->updateQuiz($_POST);
+                redirect("index?message=".$messageCode);
             }
-        }else{
-            $messageCode = $this->quizService->updateQuiz($_POST);
-        }
+        }else redirect("index");
+
     }
 
     public function showQuizzes(){

@@ -105,4 +105,46 @@ class QuestionService implements IQuestionService
         return $this->constructQuestion($this->questionRepository->getQuestionById($questionId));
     }
 
+    public function setNewFillInChoice(int $questionId, string $choiceText)
+    {
+        $choiceService = ServiceContainer::get("ChoiceService");
+
+        $choiceService->deleteFillInChoice($questionId);
+        $choiceService->createAndSave($questionId, $choiceText, true);
+    }
+
+    public function setNewMultiChoice(int $questionId, int $choiceId)
+    {
+        $choiceService = ServiceContainer::get("ChoiceService");
+        $choices = $choiceService->getChoicesByQuestionId($questionId);
+
+        for ($i = 0; $i < count($choices); $i++){
+            $choice = $choices[$i];
+
+            if ($choice->getPrimaryKey() == $choiceId){
+                $choice->__set("IsCorrect", true);
+            }else{
+                $choice->__set("IsCorrect", false);
+            }
+        }
+        $choiceService->saveChoices($choices);
+    }
+
+    public function setNewMultiChoices(int $questionId, array $choiceIds)
+    {
+        $choiceService = ServiceContainer::get("ChoiceService");
+        $choices = $choiceService->getChoicesByQuestionId($questionId);
+
+        for($i = 0; $i < count($choices); $i++){
+            $choice = $choices[$i];
+
+            if (in_array($choice->getPrimaryKey(), $choiceIds)){
+                $choice->__set("IsCorrect", true);
+            }else{
+                $choice->__set("IsCorrect", false);
+            }
+        }
+
+        $choiceService->saveChoices($choices);
+    }
 }

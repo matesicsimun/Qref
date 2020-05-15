@@ -43,10 +43,28 @@ class StatisticsService implements IStatisticsService
         $statistic = new Statistic();
         $all = $statistic->loadAll("where solverId = '$userId'");
         if ($all) {
-            return $this->constructStatistics($all);
+            return $this->constructStatisticsShallow($all);
         } else {
             return null;
         }
+    }
+
+    private function constructStatisticsShallow(array $statistics): array{
+        $constructed = [];
+        foreach($statistics as $statistic){
+            $constructed[] = $this->constructStatisticShallow($statistic);
+        }
+        return $constructed;
+    }
+
+    private function constructStatisticShallow(Statistic $statistic): Statistic{
+        $statistic->setSolveDate(new DateTime($statistic->__get("SolveDate")));
+        $statistic->setPercentage($statistic->__get("Percentage"));
+        $statistic->setId($statistic->getPrimaryKey());
+        $statistic->setAttemptNumber($statistic->__get("AttemptNumber"));
+        $statistic->setQuizSolved(ServiceContainer::get("QuizService")->getQuizByIdShallow($statistic->__get("QuizId")));
+
+        return $statistic;
     }
 
     public function getViewStatisticsForUser(int $userId):array{
@@ -54,6 +72,7 @@ class StatisticsService implements IStatisticsService
 
         $viewStatistics = [];
         $avgAndCnt = $this->getAveragePercentagesAndCounts($statistics);
+
         $averages = $avgAndCnt['averages'];
         $counts = $avgAndCnt['counts'];
 
@@ -75,7 +94,7 @@ class StatisticsService implements IStatisticsService
         $names = [];
         foreach($statistics as $statistic){
             $quizName = $statistic->getQuizSolved()->getName();
-            $names[] = $quizName;
+            if (!in_array($quizName, $names)) $names[] = $quizName;
             isset($counts[$quizName]) ? $counts[$quizName]++ : $counts[$quizName] = 1;
             isset($sums[$quizName]) ? $sums[$quizName]+=$statistic->getPercentage() : $sums[$quizName] = $statistic->getPercentage();
         }
@@ -84,7 +103,7 @@ class StatisticsService implements IStatisticsService
         for($i = 0; $i < count($sums); $i++){
             $averages[$names[$i]] = $sums[$names[$i]] / $counts[$names[$i]];
         }
-
+     
         return ["averages"=>$averages, "counts"=>$counts];
     }
 

@@ -20,5 +20,7 @@ interface IQuizService
 
     public function getQuizResults(array $solvedQuizData, bool $isLoggedIn):array;
 
-    public function updateQuiz(array $quizData): int;
+    public function updateQuiz(array $quizData);
+
+    public function getQuizByIdShallow(string $quizId);
 }

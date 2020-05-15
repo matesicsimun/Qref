@@ -15,4 +15,5 @@ class MessageCodes
     const USER_NOT_FOUND = 106;
     const USER_DATA_INVALID = 107;
     const REGISTER_UNSUCCESSFUL = 108;
+    const EDIT_SUCCESSFUL = 109;
 }

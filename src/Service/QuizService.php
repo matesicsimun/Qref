@@ -6,6 +6,7 @@ namespace src\Service;
 
 use src\Interfaces\IQuizRepository;
 use src\Interfaces\IQuizService;
+use src\Model\AbstractClasses\MessageCodes;
 use src\Model\AbstractClasses\Types;
 use src\Model\Choice;
 use src\Model\Question;
@@ -308,10 +309,11 @@ class QuizService implements IQuizService
         return $notByAuthor;
     }
 
-    public function updateQuiz(array $quizData): int
+    public function updateQuiz(array $quizData)
     {
         $quizId = $quizData['quizId'];
 
+        $multiMulti = [];
         foreach($quizData as $name => $value){
             if ($name == 'quizId') continue;
 
@@ -320,23 +322,31 @@ class QuizService implements IQuizService
             }else{
                 $questionId = intval($name);
                 $questionService = ServiceContainer::get("QuestionService");
-                $choiceService = ServiceContainer::get("ChoiceService");
 
                 $question = $questionService->getQuestionById($questionId);
-                if ($question->getType() === Types::FILL_IN){
-
-                    $choice = new Choice();
-                    $choice->setText($value);
-                    $choice->setIsCorrect(true);
-                    $choice->setQuestion($question);
-                    $choiceService->
-
-                    $question->setCorrectChoices([$choice]);
+                if ($question->getType() === Types::FILL_IN && $value!=''){
+                    $questionService->setNewFillInChoice($questionId, $value);
 
                 }else if ($question->getType() === Types::MULTI_ONE){
-                    
+                    $questionService->setNewMultiChoice($questionId, $value);
+                }else{
+                    $multiMulti[$questionId][] = $value;
                 }
             }
         }
+
+        foreach($multiMulti as $questionId => $choiceIds){
+            $questionService->setNewMultiChoices($questionId, $choiceIds);
+        }
+
+        return MessageCodes::EDIT_SUCCESSFUL;
+    }
+
+    public function getQuizByIdShallow(string $quizId)
+    {
+        $quiz = $this->quizRepository->getQuiz($quizId);
+        $quiz->setName($quiz->__get("Name"));
+
+        return $quiz;
     }
 }

@@ -19,13 +19,7 @@ class ChoiceService implements IChoiceService
     }
 
     public function saveChoice(Choice $choice){
-        $choiceOld = $this->getChoiceByQuestionAndText($choice->getQuestion()->getId(), $choice->getText());
-        if ($choiceOld){
-            $choiceOld->setIsCorrect(true);
-            $this->choiceRepository->saveChoice($choiceOld);
-        }else{
-            $this->choiceRepository->saveChoice($choice);
-        }
+        $this->choiceRepository->saveChoice($choice);
     }
 
     private function getChoiceByQuestionAndText(int $questionId, string $text) : ?Choice{
@@ -85,6 +79,11 @@ class ChoiceService implements IChoiceService
         return $choice;
     }
 
+    public function saveChoices(array $choices){
+        foreach($choices as $choice){
+            $this->saveChoice($choice);
+        }
+    }
 
     public function getChoiceById(int $choiceId):Choice{
         return $this->constructChoice($this->choiceRepository->getChoiceById($choiceId));
@@ -94,9 +93,29 @@ class ChoiceService implements IChoiceService
     {
         $arr = $this->choiceRepository->getChoicesByQuestionid($questionId);
         $constructed = [];
+        if (!$arr) return array();
+
         foreach($arr as $choice){
             $constructed[] = $this->constructChoice($choice);
         }
         return $constructed;
+    }
+
+    public function deleteFillInChoice(int $questionId)
+    {
+        $choices = $this->choiceRepository->getChoicesByQuestionid($questionId);
+        $choice = $choices[0];
+
+        $this->choiceRepository->deleteChoice($choice->getPrimaryKey());
+    }
+
+    public function createAndSave(int $questionId, string $text, bool $isCorrect)
+    {
+        $choice = new Choice();
+        $choice->__set("Text", $text);
+        $choice->__set("QuestionId", $questionId);
+        $choice->__set("IsCorrect", true);
+
+        $this->choiceRepository->saveChoice($choice);
     }
 }
