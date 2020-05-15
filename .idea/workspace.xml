@@ -38,14 +38,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="ValidationTest.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/ValidationTest.php">
+    <configuration name="ValidationTest.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/ValidationTest.php">
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="PHP Script.ValidationTest.php" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -73,7 +68,7 @@
       <workItem from="1589363071874" duration="11488000" />
       <workItem from="1589440459413" duration="15080000" />
       <workItem from="1589465524359" duration="301000" />
-      <workItem from="1589529344134" duration="8881000" />
+      <workItem from="1589529344134" duration="11726000" />
     </task>
     <servers />
   </component>
@@ -117,10 +112,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="165" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588959724369" />
-    <state x="738" y="178" key="NewPhpClassDialog" timestamp="1589533050102">
+    <state x="738" y="178" key="NewPhpClassDialog" timestamp="1589539465251">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="738" y="178" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1589533050102" />
+    <state x="738" y="178" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1589539465251" />
     <state x="604" y="336" key="NewPhpFileDialog" timestamp="1588955873836">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -137,10 +132,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1589536086374" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1589538364168">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1589542087482">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1589538364168" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1589542087482" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

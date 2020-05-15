@@ -307,4 +307,36 @@ class QuizService implements IQuizService
 
         return $notByAuthor;
     }
+
+    public function updateQuiz(array $quizData): int
+    {
+        $quizId = $quizData['quizId'];
+
+        foreach($quizData as $name => $value){
+            if ($name == 'quizId') continue;
+
+            if (strpos("&", $name)){
+
+            }else{
+                $questionId = intval($name);
+                $questionService = ServiceContainer::get("QuestionService");
+                $choiceService = ServiceContainer::get("ChoiceService");
+
+                $question = $questionService->getQuestionById($questionId);
+                if ($question->getType() === Types::FILL_IN){
+
+                    $choice = new Choice();
+                    $choice->setText($value);
+                    $choice->setIsCorrect(true);
+                    $choice->setQuestion($question);
+                    $choiceService->
+
+                    $question->setCorrectChoices([$choice]);
+
+                }else if ($question->getType() === Types::MULTI_ONE){
+                    
+                }
+            }
+        }
+    }
 }

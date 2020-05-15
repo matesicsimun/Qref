@@ -10,6 +10,7 @@ use src\Service\ServiceContainer;
 use src\View\HomeHeaderView;
 use src\View\HomePageView;
 use src\View\QuizCreateView;
+use src\View\QuizEditView;
 use src\View\QuizResultsView;
 use src\View\QuizTableView;
 use src\View\QuizTestView;
@@ -41,9 +42,23 @@ class QuizController extends AbstractController
         }
     }
 
+
+    public function editQuiz(){
+        if (null == $_POST){
+            if (get("quizId")){
+                $quiz = $this->quizService->getQuiz(get("quizId"));
+                $quizEditView = new QuizEditView($quiz);
+                $quizEditView->showView();
+            }
+        }else{
+            $messageCode = $this->quizService->updateQuiz($_POST);
+        }
+    }
+
     public function showQuizzes(){
         if (isLoggedIn()){
             $header = new HomeHeaderView(getSessionData("username"));
+
 
             $userQuizzes = $this->quizService->getAllByAuthor(getSessionData("userId"));
             $otherQuizzes = $this->quizService->getAllNotByAuthor(getSessionData("userId"));

@@ -18,6 +18,26 @@ class ChoiceService implements IChoiceService
         $this->choiceRepository = $choiceRepository;
     }
 
+    public function saveChoice(Choice $choice){
+        $choiceOld = $this->getChoiceByQuestionAndText($choice->getQuestion()->getId(), $choice->getText());
+        if ($choiceOld){
+            $choiceOld->setIsCorrect(true);
+            $this->choiceRepository->saveChoice($choiceOld);
+        }else{
+            $this->choiceRepository->saveChoice($choice);
+        }
+    }
+
+    private function getChoiceByQuestionAndText(int $questionId, string $text) : ?Choice{
+        $choices = $this->choiceRepository->getChoicesByQuestionid($questionId);
+        foreach($choices as $choice){
+            if ($choice->getText() == $text){
+                return $choice;
+            }
+        }
+        return null;
+    }
+
     public function saveChoiceFromString(string $line, int $questionId, int $type): int
     {
         $choicePart = explode(":", $line)[1];
@@ -64,6 +84,7 @@ class ChoiceService implements IChoiceService
 
         return $choice;
     }
+
 
     public function getChoiceById(int $choiceId):Choice{
         return $this->constructChoice($this->choiceRepository->getChoiceById($choiceId));

@@ -67,7 +67,7 @@ class QuizTableView implements IView
 
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("border", "true"));
-        
+
         $headerRow = $this->createHeaderRow(["Name", "Description", "Author", "Public?", "Comments enabled?",
                                                 "TimeLimit", "Solve", "Edit", "Delete"]);
 
@@ -79,7 +79,7 @@ class QuizTableView implements IView
             $edit = new \HTMLCellElement();
 
             $editLink = new \HTMLAElement();
-            $editLink->add_attribute(new \HTMLAttribute("href", "edit_quiz?quiz_id=".$quiz->getQuizId()));
+            $editLink->add_attribute(new \HTMLAttribute("href", "quiz_edit?quizId=".$quiz->getQuizId()));
             $editLink->add_child(new \HTMLTextNode("Edit"));
 
             $edit->add_child($editLink);
@@ -88,7 +88,7 @@ class QuizTableView implements IView
             $delete = new \HTMLCellElement();
 
             $deleteLink = new \HTMLAElement();
-            $deleteLink->add_attribute(new \HTMLAttribute("href", "delete_quiz?quiz_id=".$quiz->getQuizId()));
+            $deleteLink->add_attribute(new \HTMLAttribute("href", "quiz_delete?quizId=".$quiz->getQuizId()));
             $deleteLink->add_child(new \HTMLTextNode("Delete"));
             $delete->add_child($deleteLink);
 
