@@ -24,7 +24,7 @@ class HeaderView extends AbstractView
     public function showView() : void
     {
         if ($this->message){
-            echo $this->message;
+            echo __($this->message);
         }
 
         $table = new \HTMLTableElement();

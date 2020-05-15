@@ -52,7 +52,7 @@ class FullStatisticsView implements IView
             $row = new \HTMLRowElement();
 
             $quiz = new \HTMLCellElement();
-            $quiz->add_text($statistic->getQuizSolved()->getName());
+            $quiz->add_text(__($statistic->getQuizSolved()->getName()));
 
             $date = new \HTMLCellElement();
             $date->add_text($statistic->getSolveDate()->format('Y-m-d H:i:s'));

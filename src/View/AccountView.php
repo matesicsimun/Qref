@@ -45,9 +45,9 @@ class AccountView implements IView
         $passwordHeader->add_text("Password hash: ");
         $changePasswordHeader->add_text("Change password");
 
-        $emailCell->add_text($this->user->getEmail());
-        $dobCell->add_text($this->user->getBirthDate());
-        $passwordCell->add_text($this->user->getPasswordHash());
+        $emailCell->add_text(__($this->user->getEmail()));
+        $dobCell->add_text(__($this->user->getBirthDate()));
+        $passwordCell->add_text(__($this->user->getPasswordHash()));
 
         $changePasswordLink = new \HTMLAElement();
         $changePasswordLink->add_attribute(new \HTMLAttribute("href", "change_password"));

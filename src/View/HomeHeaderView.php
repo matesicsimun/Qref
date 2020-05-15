@@ -45,7 +45,7 @@ class HomeHeaderView extends AbstractView
         $row_1->add_child($accountCell);
 
         $usernameLabel = new \HTMLLabelElement();
-        $usernameLabel->add_child(new \HTMLTextNode($this->userData['username']));
+        $usernameLabel->add_child(new \HTMLTextNode(__($this->userData['username'])));
         $usernameCell = new \HTMLCellElement();
         $usernameCell->add_child($usernameLabel);
         $row_1->add_child($usernameCell);

@@ -44,7 +44,10 @@ class QuizDetailsView implements IView
         }else{
             $comments = new \HTMLCollection();
             foreach($this->quiz->getComments() as $comment){
-                $comment = new \HTMLTextNode( $comment->toString());
+                $commentStr = $comment->toString();
+                $commentSafe = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $commentStr);
+                $comment = new \HTMLTextNode($commentSafe);
+
                 $comments->add($comment);
                 $comments->add(new \HTMLBrElement());
             }

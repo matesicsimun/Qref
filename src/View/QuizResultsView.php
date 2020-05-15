@@ -62,9 +62,9 @@ class QuizResultsView implements IView
        foreach($this->answers as $questionId => $answerArr){
             echo "Question: " . $questionId;
             echo $br->get_html();
-            echo "user answer = " . $answerArr['userAnswer'];
+            echo "user answer = " . __($answerArr['userAnswer']);
             echo $br->get_html();
-            echo "correct answer = " . $answerArr['correctAnswer'];
+            echo "correct answer = " . __($answerArr['correctAnswer']);
             echo $br->get_html();
             echo $br->get_html();
        }

@@ -21,7 +21,7 @@ class IndexView implements IView
      */
     public function showView(): void
     {
-        $header = new HeaderView($this->message);
+        $header = new HeaderView(__($this->message));
         $rules = new \HTMLPelement();
         $rules->add_attribute(new \HTMLAttribute("style", "text-align:center"));
         $rules->add_child(new \HTMLTextNode("Welcome to the QRef quiz!"));
