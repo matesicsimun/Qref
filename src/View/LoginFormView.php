@@ -16,6 +16,7 @@ class LoginFormView implements IView
         $form = new \HTMLFormElement();
         $form->add_attribute(new \HTMLAttribute("action","login"));
         $form->add_attribute(new \HTMLAttribute("method","post"));
+        $form->add_attribute(new \HTMLAttribute("autocomplete","off"));
 
         $userNameInput = new \HTMLInputElement();
         $userNameInput->add_attribute(new \HTMLAttribute("name","username"));

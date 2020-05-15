@@ -12,8 +12,9 @@ class QuizResultsView implements IView
     private float $points;
     private array $answers;
 
-    public function __construct(array $answers, float $points, float $percentage)
+    public function __construct(array $answers, float $points, float $percentage, bool $isTimedOut)
     {
+        $this->timedOut = $isTimedOut;
         $this->percentage = $percentage;
         $this->points = $points;
         $this->answers = $answers;
@@ -31,6 +32,14 @@ class QuizResultsView implements IView
 
        $br = new \HTMLBrElement();
        echo $br->get_html();
+
+       if ($this->timedOut){
+           echo $br->get_html();
+           $h3 = new \HTMLHElement(3);
+           $h3->add_child(new \HTMLTextNode("Timed out. No points awarded"));
+           echo $h3->get_html();
+           echo $br->get_html();
+       }
 
        $percent = new \HTMLHElement(2);
        $percent->add_child(new \HTMLTextNode("Percentage: " . strval($this->percentage)));

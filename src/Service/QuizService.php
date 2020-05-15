@@ -61,7 +61,7 @@ class QuizService implements IQuizService
         $quiz->__set("CommentsEnabled", isset($quizData['commentsEnabled']));
         $quiz->__set("IsPublic", isset($quizData['isPublic']));
         $quiz->__set("AuthorId", $quizData['authorId']);
-
+        $quiz->__set("TimeLimit", $quizData['timeLimit']);
 
         return $quiz;
     }
@@ -73,6 +73,7 @@ class QuizService implements IQuizService
         $quiz->setCommentsEnabled($quiz->__get("CommentsEnabled"));
         $quiz->setIsPublic(($quiz->__get("IsPublic")));
         $quiz->setAuthor(ServiceContainer::get("UserService")->loadUserById($quiz->__get("AuthorId")));
+        $quiz->setTimeLimit($quiz->__get("TimeLimit"));
 
         return $quiz;
     }
@@ -92,7 +93,9 @@ class QuizService implements IQuizService
 
     public function getQuiz(string $id): ?Quiz
     {
-        return $this->constructQuizFull($this->quizRepository->getQuiz($id));
+        $quiz = $this->quizRepository->getQuiz($id);
+
+        return $this->constructQuizFull($quiz);
     }
 
 
@@ -101,7 +104,9 @@ class QuizService implements IQuizService
         $quizzes = $this->quizRepository->getAll();
         $constructed = [];
         foreach($quizzes as $quiz){
-            $constructed[] = $this->constructQuizWithoutQuestions($quiz);
+            if ($quiz->__get("IsPublic") == true || $quiz->__get("AuthorId") == getSessionData('userId')){
+                $constructed[] = $this->constructQuizWithoutQuestions($quiz);
+            }
         }
 
         return $constructed;
@@ -178,13 +183,19 @@ class QuizService implements IQuizService
         $multiAnswers = [];
         $correctAnswerUserAnswer = [];
 
+        $startTime = $solvedQuizData['startTime'];
+        $endTime = time();
+        $timeDiff = $endTime - $startTime;
+
+
         $quizId = $solvedQuizData['quizId'];
         $quiz = $this->getQuiz($quizId);
 
         foreach($solvedQuizData as $key => $value){
-            if ($key == 'quizId') continue;
+            if ($key == 'quizId' || $key == 'startTime') continue;
 
             $question = $this->getQuestionForSolvedQuiz($key);
+
             if ($question->getType() === Types::FILL_IN){
                 $userAnswer = $value;
                 $correctAnswer = $question->getCorrectChoices()[0];
@@ -213,6 +224,15 @@ class QuizService implements IQuizService
         if ($isLoggedIn == true){
             ServiceContainer::get("StatisticsService")->saveStatistic(getSessionData('userId'), $quizId,
                                                                     $results['percentage'], new \DateTime());
+        }
+
+
+        if ($timeDiff > $quiz->getTimeLimit()){
+            $results['points'] = 0;
+            $results['percentage'] = 0;
+            $results['timeOut'] = true;
+        }else{
+            $results['timeOut'] = false;
         }
 
         return $results;

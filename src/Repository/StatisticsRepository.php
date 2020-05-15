@@ -34,7 +34,9 @@ class StatisticsRepository implements  IStatisticsRepository
     {
         try{
             $statistic = new Statistic();
-            return $statistic->loadAll("where solverId = '$userId'");
+            $arr =  $statistic->loadAll("where solverId = '$userId'");
+
+            return $arr == null ? array() : $arr;
         } catch (\PDOException $e){
 
         }

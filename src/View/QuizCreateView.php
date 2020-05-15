@@ -35,8 +35,8 @@ class QuizCreateView implements IView
         $authorIdHidden->add_attribute(new \HTMLAttribute("value", $this->authorId));
         $authorIdHidden->add_attribute(new \HTMLAttribute("name", "authorId"));
 
-        $inputNames = ["quizName", "quizDescription", "quizFile",  "isPublic", "commentsEnabled"];
-        $inputTypes = ["text", "text", "file", "checkbox", "checkbox"];
+        $inputNames = ["quizName", "quizDescription", "quizFile",  "isPublic", "commentsEnabled", "timeLimit"];
+        $inputTypes = ["text", "text", "file", "checkbox", "checkbox", "number"];
         $attributes = ["quizName"=>[
             "required"=>"true",
             "maxlength"=>"100"
@@ -45,10 +45,13 @@ class QuizCreateView implements IView
             "maxlength"=>"300",
         ], "quizFile"=>[
             "accept"=>".qref"
+        ], "timeLimit"=>[
+            "max"=>500,
+            "min"=>1
         ]];
 
         $labelNames = ["Quiz name: ", "Quiz description: ", "Quiz file: ",
-                         "Quiz public?", "Comments enabled?"];
+                         "Quiz public?", "Comments enabled?", "Time limit in seconds:"];
 
         $inputs = createInputs($inputTypes,$inputNames, $inputNames, $attributes);
         $labels = createLabels($labelNames, $inputNames);

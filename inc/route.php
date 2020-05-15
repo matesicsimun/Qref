@@ -28,7 +28,7 @@ AbstractRoute::register("change_password", new DefaultRoute("change_password", a
     "action"=>"changePassword"
 )));
 
-AbstractRoute::register("e404", new DefaultRoute("error/404", array(
+AbstractRoute::register("e404", new DefaultRoute("e404", array(
         "controller" => "NotFoundController",
         "action" => "display"
     ))

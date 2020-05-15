@@ -32,7 +32,7 @@ class QuizController extends AbstractController
             }
         }else{
             $results = $this->quizService->getQuizResults($_POST, isLoggedIn());
-            $quizResultsView = new QuizResultsView($results['answers'], $results['points'], $results['percentage']);
+            $quizResultsView = new QuizResultsView($results['answers'], $results['points'], $results['percentage'], $results['timeOut']);
             if (isLoggedIn()){
                 $header = new HomePageView(getSessionData('username'));
                 $header->showView();

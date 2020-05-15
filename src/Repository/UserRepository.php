@@ -26,9 +26,6 @@ class UserRepository implements IUserRepository
 
     public function saveUser(\src\Model\User $user): int
     {
-        if($this->getUserByUsername($user->__get("Username"))){
-            return -2;
-        }
         try{
             $user->save();
         } catch (\Exception $e){

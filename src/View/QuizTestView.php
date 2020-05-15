@@ -27,6 +27,22 @@ class QuizTestView implements IView
         $form->add_attribute(new \HTMLAttribute("action", "quiz_solve"));
         $form->add_attribute(new \HTMLAttribute("method", "post"));
 
+        $timeDiv = new \HTMLDivElement();
+        $span = new \HTMLSpanElement();
+        $span->add_attribute(new \HTMLAttribute("id", "time"));
+        $span->add_child(new \HTMLTextNode($this->quiz->getTimeLimit()));
+        $timeDiv->add_child(new \HTMLTextNode("You have: "));
+        $timeDiv->add_child($span);
+        $timeDiv->add_child(new \HTMLTextNode(" seconds remaining."));
+
+        echo $timeDiv->get_html();
+
+        $timeHidden = new \HTMLInputElement();
+        $timeHidden->add_attribute(new \HTMLAttribute("type", "hidden"));
+        $timeHidden->add_attribute(new \HTMLAttribute("name", "startTime"));
+        $timeHidden->add_attribute(new \HTMLAttribute("value", time()));
+        $form->add_child($timeHidden);
+
         $hiddenQuizId = new \HTMLInputElement();
         $hiddenQuizId->add_attribute(new \HTMLAttribute("type", "hidden"));
         $hiddenQuizId->add_attribute(new \HTMLAttribute("name", "quizId"));
@@ -47,6 +63,25 @@ class QuizTestView implements IView
         $submit = new \HTMLInputElement();
         $submit->add_attribute(new \HTMLAttribute("type", "submit"));
         $form->add_child($submit);
+
+
+        $countDownScript = new \HTMLScriptElement();
+        $countDownScript->add_child(new \HTMLTextNode("function startTimer(seconds, display) {
+                                                                        timer = seconds;
+                                                                        setInterval(function () {
+                                                                            display.textContent = seconds;
+                                                                            if (--seconds < 0) {
+                                                                                seconds = 0;
+                                                                            }
+                                                                        }, 1000);
+                                                                    }
+                                                                       window.onload = function () {
+                                                                            var seconds = 300,
+                                                                            display = document.querySelector('#time');
+                                                                       startTimer(seconds, display);
+                                                            };"));
+
+        echo $countDownScript->get_html();
 
         echo $form->get_html();
     }

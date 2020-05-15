@@ -4,6 +4,8 @@
 namespace src\Controller;
 
 
+use src\View\NotFoundView;
+
 class NotFoundController extends AbstractController
 {
     public function display(){
@@ -12,8 +14,7 @@ class NotFoundController extends AbstractController
 
     protected function showHtml()
     {
-        $errorMsg = new \HTMLPelement();
-        $errorMsg->add_child(new \HTMLTextNode("Not found!"));
-        echo $errorMsg->get_html();
+        $notfoundView = new NotFoundView();
+        $notfoundView->showView();
     }
 }

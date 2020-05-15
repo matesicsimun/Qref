@@ -24,6 +24,8 @@ class ChangePasswordView implements IView
         $form = new \HTMLFormElement();
         $form->add_attribute(new \HTMLAttribute("method", "post"));
         $form->add_attribute(new \HTMLAttribute("action", "change_password"));
+        $form->add_attribute(new \HTMLAttribute("autocomplete", "off"));
+
 
         $passwordOld = new \HTMLInputElement();
         $passwordOld->add_attribute(new \HTMLAttribute("type", "password"));

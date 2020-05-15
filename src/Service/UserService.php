@@ -5,6 +5,8 @@ namespace src\Service;
 use DateTime;
 use src\Interfaces\IUserRepository;
 use src\Interfaces\IUserService;
+use src\Model\AbstractClasses\ErrorCodes;
+use src\Model\AbstractClasses\MessageCodes;
 use src\Model\User;
 
 class UserService implements IUserService
@@ -18,9 +20,28 @@ class UserService implements IUserService
 
     public function saveUser(array $userData): int
     {
+        if ($this->usernameExists($userData['username'])){
+            return MessageCodes::USERNAME_TAKEN;
+        }
+
         $user = $this->createUser($userData);
-        return $this->userRepository->saveUser($user);
+        if ($user){
+            if ($this->userRepository->saveUser($user) === -1){
+                return MessageCodes::REGISTER_UNSUCCESSFUL;
+            }
+            return MessageCodes::REGISTER_SUCCESSFUL;
+        }else{
+            return ErrorCodes::USER_DATA_INVALID;
+        }
     }
+
+    private function usernameExists(string $username): bool{
+        $user = $this->loadUserByUsername($username);
+
+        if ($user) return true;
+        else return false;
+    }
+
 
     /**
      * Creates and returns a new User object
@@ -131,14 +152,21 @@ class UserService implements IUserService
     public function loadUserByUsername(string $username): ?User
     {
         $userNoAttributes = $this->userRepository->GetUserByUsername($username);
-        return $this->setUserAttributes($userNoAttributes);
+        if($userNoAttributes){
+            return $this->setUserAttributes($userNoAttributes);
+        }
+
+        return null;
     }
 
 
     public function loadUserById(int $id): ?User
     {
         $userNoAttributes = $this->userRepository->getUser($id);
-        return $this->setUserAttributes($userNoAttributes);
+        if ($userNoAttributes){
+            return $this->setUserAttributes($userNoAttributes);
+        }
+        return null;
     }
 
     private function validatePassword(string $password): bool{

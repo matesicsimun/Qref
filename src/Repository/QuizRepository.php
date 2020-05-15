@@ -71,6 +71,8 @@ class QuizRepository implements IQuizRepository
     public function getAllByAuthorId(int $authorId): array
     {
         $quiz = new Quiz();
-        return $quiz->loadAll("where authorId = '$authorId'");
+        $arr = $quiz->loadAll("where authorId = '$authorId'");
+
+        return $arr == null ? array() : $arr;
     }
 }

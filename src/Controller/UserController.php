@@ -7,6 +7,9 @@ namespace src\Controller;
 use src\Interfaces\IUserRepository;
 use src\Interfaces\IUserService;
 use src\Interfaces\IView;
+use src\Model\AbstractClasses\ErrorMessages;
+use src\Model\AbstractClasses\MessageCodes;
+use src\Model\AbstractClasses\Messages;
 use src\Repository\UserRepository;
 use src\Service\ServiceContainer;
 use src\View\AccountView;
@@ -21,12 +24,12 @@ class UserController extends AbstractController
 {
     private IUserService $userService;
     private IView $view;
-    private string $message;
+    private int $messageCode;
 
     public function __construct()
     {
         $this->userService = ServiceContainer::get("UserService");
-        $this->message = '';
+        $this->messageCode = 0;
     }
 
     public function showAccountInfo(){
@@ -64,35 +67,39 @@ class UserController extends AbstractController
                 }
                 redirect("index");
             }
+        }else{
+            redirect("index");
         }
-        redirect("index");
     }
 
     public function registerUser(){
 
         if (null == $_POST){
-            $this->view = new RegisterView();
+            $this->view = new RegisterView($this->getMessage());
             $this->showHtml();
         }else{
             $formData = $_POST;
-            $code = $this->userService->saveUser($formData);
+            $this->messageCode = $this->userService->saveUser($formData);
 
-            if ($code < 0){
-                if ($code == -2) $this->message = "Username already exists.";
-                else  $this->message = "Something went wrong. Sorry, try again soon.";
+            if($this->messageCode === MessageCodes::REGISTER_SUCCESSFUL){
+                redirect("index?message=".$this->messageCode);
             }else{
-                $this->message = "User successfully registered.";
+                redirect("register?message=".$this->messageCode);
             }
-            redirect("index?message=".$this->message);
         }
+    }
+
+    private function getMessage(): string{
+        $msgCode = get("message", 0);
+        return Messages::translateMessageCode(is_numeric($msgCode) ? $msgCode : 0);
     }
 
     public function logoutUser(){
         session_unset();
         session_destroy();
 
-        $this->message="You have been logged out!";
-        redirect("index?message=".$this->message);
+        $this->messageCode=MessageCodes::LOGOUT_SUCCESSFUL;
+        redirect("index?message=".$this->messageCode);
     }
 
     public function loginUser(){
@@ -108,16 +115,16 @@ class UserController extends AbstractController
             if($user){
                 if ($this->userService->checkPasswordForUser($formData['username'], $formData['password'])){
                     $this->updateSessionData($user->getId(), $user->getUserName());
-                    $this->message="Welcome back, " . $user->getUserName();
+                    $this->messageCode=MessageCodes::LOGIN_SUCCESSFUL;
                 }else{
-                    $this->message = "Incorrect password.";
+                    $this->messageCode = MessageCodes::USERNAME_PASSWORD_INCORRECT;
                 }
             }else{
-                $this->message="User not found.";
+                $this->messageCode=MessageCodes::USER_NOT_FOUND;
             }
 
         }
-        redirect("index?message=".$this->message);
+        redirect("index?message=".$this->messageCode);
     }
 
     private function updateSessionData(int $id, string $username){

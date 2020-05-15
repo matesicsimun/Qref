@@ -25,7 +25,43 @@ class Quiz extends AbstractDBModel
 
     private string $isPublic;
 
+    private int $timeLimit = 5 * 60;
+
+    private array $comments;
+
     private array $questions;
+
+    /**
+     * @return int
+     */
+    public function getTimeLimit(): int
+    {
+        return $this->timeLimit;
+    }
+
+    /**
+     * @param int $timeLimit
+     */
+    public function setTimeLimit(int $timeLimit): void
+    {
+        $this->timeLimit = $timeLimit;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComments(): array
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param array $comments
+     */
+    public function setComments(array $comments): void
+    {
+        $this->comments = $comments;
+    }
 
     /**
      * @return string
@@ -152,6 +188,6 @@ class Quiz extends AbstractDBModel
 
     public function getColumns()
     {
-        return ["QuizId", "AuthorId", "Name", "Description", "CommentsEnabled", "IsPublic"];
+        return ["QuizId", "AuthorId", "Name", "Description", "CommentsEnabled", "IsPublic", "TimeLimit"];
     }
 }

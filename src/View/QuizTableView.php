@@ -6,6 +6,7 @@ namespace src\View;
 
 use mysql_xdevapi\Table;
 use src\Interfaces\IView;
+use src\Model\Quiz;
 
 class QuizTableView implements IView
 {
@@ -18,7 +19,90 @@ class QuizTableView implements IView
         $this->foreignQuizzes = $foreignQuizzes;
     }
 
-    private function createTable(array $quizzes, string $captionText):\HTMLTableElement{
+    private function createHeaderRow(array $headers): \HTMLRowElement{
+        $row = new \HTMLRowElement();
+        foreach($headers as $headerText){
+            $cell = new \HTMLCellElement("th");
+            $cell->add_text($headerText);
+
+            $row->add_child($cell);
+        }
+
+        return $row;
+    }
+
+    private function createRowForQuiz(Quiz $quiz):\HTMLRowElement{
+        $row = new \HTMLRowElement();
+
+        $name = new \HTMLCellElement();
+        $name->add_text($quiz->getName());
+
+        $description = new \HTMLCellElement();
+        $description->add_text($quiz->getDescription());
+
+        $author = new \HTMLCellElement();
+        $author->add_text($quiz->getAuthor()->getUsername());
+
+        $isPublic = new \HTMLCellElement();
+        $isPublic->add_text($quiz->getIsPublic() == 0 ? "No" : "Yes");
+
+        $commentsEnabled = new \HTMLCellElement();
+        $commentsEnabled->add_text($quiz->getCommentsEnabled() == 0 ? "No" : "Yes");
+
+        $timeLimit = new \HTMLCellElement();
+        $timeLimit->add_text($quiz->getTimeLimit());
+
+        $action = new \HTMLCellElement();
+        $solveLink = new \HTMLAElement();
+        $solveLink->add_attribute(new \HTMLAttribute("href", "quiz_solve?quizId=".$quiz->getQuizId()));
+        $solveLink->add_child(new \HTMLTextNode("Solve quiz!"));
+        $action->add_child($solveLink);
+
+        $row->add_cells([$name, $description, $author, $isPublic, $commentsEnabled, $timeLimit, $action]);
+
+        return $row;
+    }
+
+    private function createUserQuizzesTable(array $quizzes, string $caption) :\HTMLTableElement{
+
+        $table = new \HTMLTableElement();
+        $table->add_attribute(new \HTMLAttribute("border", "true"));
+        
+        $headerRow = $this->createHeaderRow(["Name", "Description", "Author", "Public?", "Comments enabled?",
+                                                "TimeLimit", "Solve", "Edit", "Delete"]);
+
+        $table->add_child($headerRow);
+
+        $rows = [];
+        foreach($quizzes as $quiz){
+            $row = $this->createRowForQuiz($quiz);
+            $edit = new \HTMLCellElement();
+
+            $editLink = new \HTMLAElement();
+            $editLink->add_attribute(new \HTMLAttribute("href", "edit_quiz?quiz_id=".$quiz->getQuizId()));
+            $editLink->add_child(new \HTMLTextNode("Edit"));
+
+            $edit->add_child($editLink);
+            $row->add_child($edit);
+
+            $delete = new \HTMLCellElement();
+
+            $deleteLink = new \HTMLAElement();
+            $deleteLink->add_attribute(new \HTMLAttribute("href", "delete_quiz?quiz_id=".$quiz->getQuizId()));
+            $deleteLink->add_child(new \HTMLTextNode("Delete"));
+            $delete->add_child($deleteLink);
+
+            $row->add_child($delete);
+
+            $rows[] = $row;
+        }
+
+        $table->add_children(new \HTMLCollection($rows));
+
+        return $table;
+    }
+
+    private function createForeignQuizzesTable(array $quizzes, string $captionText):\HTMLTableElement{
         $table = new \HTMLTableElement();
         $table->add_attribute(new \HTMLAttribute("border", "true"));
         $caption = new \HTMLCaptionElement();
@@ -92,10 +176,10 @@ class QuizTableView implements IView
             echo $empty->get_html();
         }else{
             if (!empty($this->userQuizes)){
-                echo $this->createTable($this->userQuizes, "Your quizzes");
+                echo $this->createUserQuizzesTable($this->userQuizes, "Your quizzes");
             }
             if (!empty($this->foreignQuizzes)){
-                echo $this->createTable($this->foreignQuizzes, "Other quizzes");
+                echo $this->createForeignQuizzesTable($this->foreignQuizzes, "Other quizzes");
             }
         }
     }

@@ -11,8 +11,11 @@ use src\Interfaces\IView;
 
 class RegisterView implements IView
 {
-    public function __construct()
+    private string $message;
+
+    public function __construct(string $message)
     {
+        $this->message = $message;
     }
 
     /**
@@ -20,10 +23,18 @@ class RegisterView implements IView
      */
     public function showView(): void
     {
+        $br = new \HTMLBrElement();
+
+        $h = new \HTMLHElement(1);
+        $h->add_child(new HTMLTextNode($this->message));
+        echo $h->get_html();
+
+        echo $br->get_html();
+
         $textNode = new \HTMLTextNode("*Password must be at least 5 characters, at least one letter, 
                                             and at least one uppercase and lowercase letter.");
         echo $textNode->get_html();
-        $br = new \HTMLBrElement();
+
         echo $br->get_html();
         echo $br->get_html();
 
@@ -32,6 +43,7 @@ class RegisterView implements IView
 
         // Add form attributes
         $form->add_attribute(new \HTMLAttribute("action","register"));
+        $form->add_attribute(new \HTMLAttribute("autocomplete","off"));
         $form->add_attribute(new \HTMLAttribute("method","post"));
 
         // Create input elements
@@ -93,6 +105,14 @@ class RegisterView implements IView
         $submit->add_attribute(new HTMLAttribute("name", "submit"));
         $submit->add_attribute(new HTMLAttribute("disabled", "true"));
         $form->add_child($submit);
+
+        $cancel = new \HTMLAElement();
+        $cancel->add_attribute(new HTMLAttribute("href", "index"));
+        $cancel->add_child(new HTMLTextNode("Cancel"));
+        $form->add_child($br);
+        $form->add_child($br);
+
+        $form->add_child($cancel);
 
         // Show HTML
         echo $form->get_html();

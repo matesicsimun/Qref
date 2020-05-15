@@ -28,7 +28,7 @@ abstract class AbstractDBModel implements DBModel{
         $stmt->execute(array($pk));
 
         if (1 !== $stmt->rowCount()){
-            return null;
+            throw new NotFoundException();
         }
 
         $this->data = $stmt->fetch();
